@@ -15,6 +15,9 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven {
+            url "http://maven.mbd.qiyi.domain/nexus/content/repositories/mbd-show/"
+        }
     }
 }
 
