@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'trojan-plugin'
 
 android {
     compileSdkVersion 25
@@ -19,6 +20,20 @@ android {
     }
 }
 
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            url uri('../repo')
+        }
+    }
+    dependencies {
+        classpath 'com.iqiyi.trojan.plugin:trojan-plugin:0.0.2'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -26,5 +41,6 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile project(':trojan-library')
     testCompile 'junit:junit:4.12'
 }

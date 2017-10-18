@@ -51,21 +51,21 @@ class TrojanCore {
      * @param parameters
      * @return true if replaced.
      */
-    boolean onEnterMethod(String className, String methodName, String methodSignature, Object target, Object[] parameters) {
+    Object onEnterMethod(String className, String methodName, String methodSignature, Object target, Object[] parameters) {
         ConcurrentHashMap<String, Library> libraries = mLibraries.get(className);
         if (libraries == null) {
-            return false;
+            return Library.NO_RETURN_VALUE;
         }
         Library library = libraries.get(getMethodId(methodName, methodSignature));
         if (library == null) {
-            return false;
+            return Library.NO_RETURN_VALUE;
         }
         try {
             Object result = library.execute("main", new Object[]{className, methodName, methodSignature, target, parameters});
-            return result instanceof Boolean && (boolean) result;
+            return result;
         } catch (ZlangRuntimeException e) {
             Logger.e(TAG, "Execution error.", e);
-            return false;
+            return Library.NO_RETURN_VALUE;
         }
     }
 
@@ -82,6 +82,7 @@ class TrojanCore {
         String key = getMethodId(methodName, methodSignature);
         map.put(key, library);
     }
+
     void config(String configuration) {
         JSONObject jsonObject;
         try {
