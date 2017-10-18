@@ -32,7 +32,10 @@ public class MainActivity extends AppCompatActivity {
                 return (boolean) result;
             }
         }
-        System.gc();
+        @U int kk = -9;
+        if (kk + d > 10) {
+            System.gc();
+        }
         return false;
     }
 

@@ -1,7 +1,10 @@
 package com.iqiyi.trojan.plugin;
 
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.TypePath;
 import org.objectweb.asm.commons.AdviceAdapter;
 
 /**
@@ -29,4 +32,30 @@ public class TrojanPluginMethodVisitor extends AdviceAdapter {
 //        }
     }
 
+    @Override
+    public void visitVarInsn(int i, int i1) {
+        System.out.println("visit var insn " + i +  " " + i1);
+        super.visitVarInsn(i, i1);
+    }
+
+    @Override
+    public void visitIincInsn(int i, int i1) {
+        System.out.println("visit iinc insn " + i +  " " + i1);
+        super.visitIincInsn(i, i1);
+    }
+
+    @Override
+    public void visitLocalVariable(String s, String s1, String s2, Label label, Label label1, int i) {
+        System.out.println("visitLocalVariable " + s +  " " + s1 + " " + s2 + " " + label + " " + label1 + "  " + i);
+        if (!s.equals("result")) {
+            super.visitLocalVariable(s, s1, s2, label, label1, i);
+        }
+    }
+
+    @Override
+    public AnnotationVisitor visitLocalVariableAnnotation(int i, TypePath typePath, Label[] labels, Label[] labels1, int[] ints, String s, boolean b) {
+
+        System.out.println("visitLocalVariableAnnotation " + i +  " " + s);
+        return super.visitLocalVariableAnnotation(i, typePath, labels, labels1, ints, s, b);
+    }
 }
