@@ -1,16 +1,15 @@
 package com.iqiyi.trojan;
 
-import android.content.Context;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 import xiaofei.library.zlang.CompileException;
 import xiaofei.library.zlang.Library;
+import xiaofei.library.zlang.ZlangRuntimeException;
 
 /**
  * Created by zhaolifei on 2017/10/17.
@@ -25,7 +24,7 @@ class TrojanCore {
     private ConcurrentHashMap<String, ConcurrentHashMap<String, Library>> mLibraries;
 
     private TrojanCore() {
-
+        mLibraries = new ConcurrentHashMap<>();
     }
 
     static TrojanCore getInstance() {
@@ -43,16 +42,31 @@ class TrojanCore {
         return methodName + "~" + methodSignature;
     }
 
-    void onEnterMethod(String className, String methodName, String methodSignature, Object target, Object[] parameters) {
+    /**
+     *
+     * @param className
+     * @param methodName
+     * @param methodSignature
+     * @param target
+     * @param parameters
+     * @return true if replaced.
+     */
+    boolean onEnterMethod(String className, String methodName, String methodSignature, Object target, Object[] parameters) {
         ConcurrentHashMap<String, Library> libraries = mLibraries.get(className);
         if (libraries == null) {
-            return;
+            return false;
         }
         Library library = libraries.get(getMethodId(methodName, methodSignature));
         if (library == null) {
-            return;
+            return false;
         }
-        // exe main new Object[]{className, methodName, methodSignature, target, parameters};
+        try {
+            Object result = library.execute("main", new Object[]{className, methodName, methodSignature, target, parameters});
+            return result instanceof Boolean && (boolean) result;
+        } catch (ZlangRuntimeException e) {
+            Logger.e(TAG, "Execution error.", e);
+            return false;
+        }
     }
 
     private static boolean isEmpty(String string) {
