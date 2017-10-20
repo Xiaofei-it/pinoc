@@ -22,7 +22,7 @@ public class TrojanPlugin extends Transform implements org.gradle.api.Plugin<Pro
 
     @Override
     public String getName() {
-        return "MethodCanaryPlugin";
+        return "TrojanPlugin";
     }
 
     @Override
@@ -82,7 +82,10 @@ public class TrojanPlugin extends Transform implements org.gradle.api.Plugin<Pro
 //                                                return super.visitMethod(access, name2, desc, signature, exceptions)
 //                                            }
 //                                        }
-                                        ClassVisitor cv = new TrojanPluginClassVisitor(classWriter)
+                                        int pos = name.indexOf(".class");
+                                        String className = name.substring(0, pos);
+                                        System.out.println(className);
+                                        ClassVisitor cv = new TrojanPluginClassVisitor(className, classWriter)
                                         classReader.accept(cv, EXPAND_FRAMES)
                                         byte[] code = classWriter.toByteArray()
                                         FileOutputStream fos = new FileOutputStream(

@@ -1,35 +1,253 @@
 package com.iqiyi.trojan.plugin;
 
 import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.ByteVector;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.TypePath;
 import org.objectweb.asm.commons.AdviceAdapter;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * Created by zhaolifei on 2017/8/21.
  */
 
 public class TrojanPluginMethodVisitor extends AdviceAdapter {
-    private String mName;
-    public TrojanPluginMethodVisitor(int api, MethodVisitor mv, int access, String name, String desc, String signature) {
-        super(api, mv, access, name, desc);
-        mName = name;
+
+    private ArrayList<String> parameterTypes;
+
+    private String returnType;
+
+    private String className;
+
+    private String methodName;
+
+    private String methodSignature;
+
+    private static final HashMap<Character, String> PRIMITIVE_SIGNATURES = new HashMap<Character, String>() {
+        {
+            put('Z', "boolean");
+            put('B', "byte");
+            put('C', "char");
+            put('S', "short");
+            put('I', "int");
+            put('J', "long");
+            put('F', "float");
+            put('D', "double");
+            put('V', "void");
+        }
+    };
+
+    private static final HashMap<String, Character> PRIMITIVE_SIGNATURES_SHORT_FORMS = new HashMap<String, Character>() {
+        {
+            put("boolean", 'Z');
+            put("byte", 'B');
+            put("char", 'C');
+            put("short", 'S');
+            put("int", 'I');
+            put("long", 'J');
+            put("float", 'F');
+            put("double", 'D');
+            put("void", 'V');
+        }
+    };
+
+    private static final HashMap<String, String> PRIMITIVE_CLASSES = new HashMap<String, String>() {
+        {
+            put("boolean", "java/lang/Boolean");
+            put("byte", "java/lang/Byte");
+            put("char", "java/lang/Character");
+            put("short", "java/lang/Short");
+            put("int", "java/lang/Integer");
+            put("long", "java/lang/Long");
+            put("float", "java/lang/Float");
+            put("double", "java/lang/Double");
+            put("void", "java/lang/Void");
+        }
+    };
+
+    private static final HashMap<String, Integer> PRIMITIVE_LOADS = new HashMap<String, Integer>() {
+        {
+            put("boolean", Opcodes.ILOAD);
+            put("byte", Opcodes.ILOAD);
+            put("char", Opcodes.ILOAD);
+            put("short", Opcodes.ILOAD);
+            put("int", Opcodes.ILOAD);
+            put("long", Opcodes.LLOAD);
+            put("float", Opcodes.FLOAD);
+            put("double", Opcodes.DLOAD);
+        }
+    };
+
+    private static final HashMap<String, Integer> PRIMITIVE_RETURNS = new HashMap<String, Integer>() {
+        {
+            put("boolean", Opcodes.IRETURN);
+            put("byte", Opcodes.IRETURN);
+            put("char", Opcodes.IRETURN);
+            put("short", Opcodes.IRETURN);
+            put("int", Opcodes.IRETURN);
+            put("long", Opcodes.LRETURN);
+            put("float", Opcodes.FRETURN);
+            put("double", Opcodes.DRETURN);
+        }
+    };
+
+    private static final HashMap<String, String> PRIMITIVE_VALUE_OF_SIGNATURES = new HashMap<String, String>() {
+        {
+            put("boolean", "(Z)Ljava/lang/Boolean;");
+            put("byte", "(B)Ljava/lang/byte;");
+            put("char", "(C)Ljava/lang/Character;");
+            put("short", "(S)Ljava/lang/Short;");
+            put("int", "(I)Ljava/lang/Integer;");
+            put("long", "(J)Ljava/lang/Long;");
+            put("float", "(F)Ljava/lang/Float;");
+            put("double", "(D)Ljava/lang/Double;");
+        }
+    };
+
+    TrojanPluginMethodVisitor(int api, MethodVisitor mv, int access, String className, String methodName, String desc) {
+        super(api, mv, access, methodName, desc);
+        System.out.println("init 1 " + desc);
+        initParameterTypes(desc);
+        System.out.println("init 2");
+        this.className = className;
+        this.methodName = methodName;
+        this.methodSignature = desc;
+    }
+
+    private Object[] obtainType(String desc, int start) {
+        char ch = desc.charAt(start);
+        String sig = PRIMITIVE_SIGNATURES.get(ch);
+        if (sig != null) {
+            return new Object[]{start + 1, sig};
+        }
+        if (ch == 'L') {
+            int pos = start + 1;
+            while (desc.charAt(pos) != ';') {
+                ++pos;
+            }
+            return new Object[]{pos + 1, desc.substring(start + 1, pos)};
+        }
+        if (ch == '[') {
+            Object[] tmp = obtainType(desc, start + 1);
+            return new Object[]{tmp[0], tmp[1] + "[]"};
+        }
+        throw new IllegalArgumentException("What the fuck!");
+    }
+
+    private void initParameterTypes(String desc) {
+        parameterTypes = new ArrayList<>();
+        int pos = 1;
+        while (desc.charAt(pos) != ')') {
+            Object[] tmp = obtainType(desc, pos);
+            parameterTypes.add((String) tmp[1]);
+            pos = (int) tmp[0];
+        }
+        ++pos;
+        returnType = (String) obtainType(desc, pos)[1];
     }
 
     @Override
     protected void onMethodEnter() {
-        super.onMethodEnter();
-    }
-
-    @Override
-    protected void onMethodExit(int opcode) {
-//        // This is wrong!!!
-//        if (!mName.equals("g")) {
-//            mv.visitLdcInsn("end of" + mName);
-//            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/iqiyi/fpsmonitortest/Fun", "g", "(Ljava/lang/String;)V", false);
-//        }
+        System.out.println("1");
+        mv.visitLdcInsn(className);
+        mv.visitLdcInsn(methodName);
+        mv.visitLdcInsn(methodSignature);
+        mv.visitVarInsn(Opcodes.AALOAD, 0);
+        int parameterNumber = parameterTypes.size();
+        mv.visitIntInsn(Opcodes.BIPUSH, parameterNumber);
+        mv.visitTypeInsn(Opcodes.ANEWARRAY, "java/lang/Object");
+        System.out.println("2");
+        for (int i = 0; i < parameterNumber; ++i) {
+            mv.visitInsn(Opcodes.DUP);
+            switch (i) {
+                case 0:
+                    mv.visitInsn(Opcodes.ICONST_0);
+                    break;
+                case 1:
+                    mv.visitInsn(Opcodes.ICONST_1);
+                    break;
+                case 2:
+                    mv.visitInsn(Opcodes.ICONST_2);
+                    break;
+                case 3:
+                    mv.visitInsn(Opcodes.ICONST_3);
+                    break;
+                case 4:
+                    mv.visitInsn(Opcodes.ICONST_4);
+                    break;
+                case 5:
+                    mv.visitInsn(Opcodes.ICONST_5);
+                    break;
+                default:
+                    mv.visitIntInsn(Opcodes.BIPUSH, parameterNumber);
+                    break;
+            }
+            System.out.println("3");
+            String parameterType = parameterTypes.get(i);
+            String className = PRIMITIVE_CLASSES.get(parameterType);
+            if (className != null) {
+                mv.visitVarInsn(PRIMITIVE_LOADS.get(parameterType), i);
+                mv.visitMethodInsn(Opcodes.INVOKESTATIC,
+                        PRIMITIVE_CLASSES.get(parameterType),
+                        "valueOf",
+                        PRIMITIVE_VALUE_OF_SIGNATURES.get(parameterType),
+                        false);
+            }
+            mv.visitInsn(Opcodes.AASTORE);
+            System.out.println("4");
+        }
+        System.out.println("5");
+        mv.visitMethodInsn(
+                Opcodes.INVOKESTATIC,
+                "com/iqiyi/trojan/Trojan",
+                "onEnterMethod",
+                "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;",
+                false);
+        int offset = parameterNumber + 1;
+        mv.visitVarInsn(Opcodes.ASTORE, offset);
+        mv.visitVarInsn(Opcodes.ALOAD, offset);
+        mv.visitFieldInsn(Opcodes.GETSTATIC, "xiaofei/library/zlang/Library", "NO_RETURN_VALUE", "Ljava/lang/Object;");
+        System.out.println("6");
+        Label label = new Label();
+        mv.visitJumpInsn(Opcodes.IF_ACMPEQ, label);
+        System.out.println("7");
+        if (returnType.equals("void") || returnType.equals("java/lang/Void")) {
+            System.out.println("8");
+            mv.visitInsn(Opcodes.RETURN);
+            System.out.println("9");
+        } else {
+            System.out.println("10");
+            mv.visitVarInsn(Opcodes.ALOAD, offset);
+            String tmpReturnType = PRIMITIVE_CLASSES.get(returnType);
+            if (tmpReturnType == null) {
+                System.out.println("11");
+                mv.visitTypeInsn(Opcodes.CHECKCAST, returnType);
+                mv.visitInsn(Opcodes.ARETURN);
+                System.out.println("12");
+            } else {
+                System.out.println("13");
+                mv.visitTypeInsn(Opcodes.INSTANCEOF, tmpReturnType);
+                mv.visitJumpInsn(Opcodes.IFEQ, label);
+                mv.visitVarInsn(Opcodes.ALOAD, offset);
+                mv.visitTypeInsn(Opcodes.CHECKCAST, tmpReturnType);
+                mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                        tmpReturnType,
+                        returnType + "Value",
+                        "()" + PRIMITIVE_SIGNATURES_SHORT_FORMS,
+                        false);
+                mv.visitInsn(PRIMITIVE_RETURNS.get(returnType));
+                System.out.println("14");
+            }
+            System.out.println("15");
+            mv.visitInsn(Opcodes.NOP);
+            System.out.println("16");
+            mv.visitLabel(label);
+            System.out.println("17");
+        }
     }
 
     @Override
