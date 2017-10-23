@@ -15,7 +15,7 @@ import java.util.HashMap;
  * Created by zhaolifei on 2017/8/21.
  */
 
-public class TrojanPluginMethodVisitor extends AdviceAdapter {
+class TrojanPluginMethodVisitor extends AdviceAdapter {
 
     private ArrayList<String> parameterTypes;
 
@@ -108,11 +108,22 @@ public class TrojanPluginMethodVisitor extends AdviceAdapter {
         }
     };
 
+    private static final HashMap<String, Integer> PRIMITIVE_FRAMES = new HashMap<String, Integer>() {
+        {
+            put("boolean", Opcodes.INTEGER);
+            put("byte", Opcodes.INTEGER);
+            put("char", Opcodes.INTEGER);
+            put("short", Opcodes.INTEGER);
+            put("int", Opcodes.INTEGER);
+            put("long", Opcodes.LONG);
+            put("float", Opcodes.FLOAT);
+            put("double", Opcodes.DOUBLE);
+        }
+    };
+
     TrojanPluginMethodVisitor(int api, MethodVisitor mv, int access, String className, String methodName, String desc) {
-        super(api, mv, access, methodName, desc);
-        System.out.println("init 1 " + desc);
+        super(api, new TestMethodVisitor2(api, mv), access, methodName, desc);
         initParameterTypes(desc);
-        System.out.println("init 2");
         this.className = className;
         this.methodName = methodName;
         this.methodSignature = desc;
@@ -150,57 +161,57 @@ public class TrojanPluginMethodVisitor extends AdviceAdapter {
         returnType = (String) obtainType(desc, pos)[1];
     }
 
+    private void pushConst(int number) {
+        switch (number) {
+            case 0:
+                mv.visitInsn(Opcodes.ICONST_0);
+                break;
+            case 1:
+                mv.visitInsn(Opcodes.ICONST_1);
+                break;
+            case 2:
+                mv.visitInsn(Opcodes.ICONST_2);
+                break;
+            case 3:
+                mv.visitInsn(Opcodes.ICONST_3);
+                break;
+            case 4:
+                mv.visitInsn(Opcodes.ICONST_4);
+                break;
+            case 5:
+                mv.visitInsn(Opcodes.ICONST_5);
+                break;
+            default:
+                mv.visitIntInsn(Opcodes.BIPUSH, number);
+                break;
+        }
+    }
     @Override
     protected void onMethodEnter() {
-        System.out.println("1");
         mv.visitLdcInsn(className);
         mv.visitLdcInsn(methodName);
         mv.visitLdcInsn(methodSignature);
-        mv.visitVarInsn(Opcodes.AALOAD, 0);
+        mv.visitVarInsn(Opcodes.ALOAD, 0);
         int parameterNumber = parameterTypes.size();
-        mv.visitIntInsn(Opcodes.BIPUSH, parameterNumber);
+        pushConst(parameterNumber);
         mv.visitTypeInsn(Opcodes.ANEWARRAY, "java/lang/Object");
-        System.out.println("2");
         for (int i = 0; i < parameterNumber; ++i) {
             mv.visitInsn(Opcodes.DUP);
-            switch (i) {
-                case 0:
-                    mv.visitInsn(Opcodes.ICONST_0);
-                    break;
-                case 1:
-                    mv.visitInsn(Opcodes.ICONST_1);
-                    break;
-                case 2:
-                    mv.visitInsn(Opcodes.ICONST_2);
-                    break;
-                case 3:
-                    mv.visitInsn(Opcodes.ICONST_3);
-                    break;
-                case 4:
-                    mv.visitInsn(Opcodes.ICONST_4);
-                    break;
-                case 5:
-                    mv.visitInsn(Opcodes.ICONST_5);
-                    break;
-                default:
-                    mv.visitIntInsn(Opcodes.BIPUSH, parameterNumber);
-                    break;
-            }
-            System.out.println("3");
+            pushConst(i);
             String parameterType = parameterTypes.get(i);
             String className = PRIMITIVE_CLASSES.get(parameterType);
             if (className != null) {
-                mv.visitVarInsn(PRIMITIVE_LOADS.get(parameterType), i);
+                mv.visitVarInsn(PRIMITIVE_LOADS.get(parameterType), i + 1);
                 mv.visitMethodInsn(Opcodes.INVOKESTATIC,
                         PRIMITIVE_CLASSES.get(parameterType),
                         "valueOf",
                         PRIMITIVE_VALUE_OF_SIGNATURES.get(parameterType),
                         false);
+            } else {
+                mv.visitVarInsn(Opcodes.ALOAD, i + 1);
             }
             mv.visitInsn(Opcodes.AASTORE);
-            System.out.println("4");
         }
-        System.out.println("5");
         mv.visitMethodInsn(
                 Opcodes.INVOKESTATIC,
                 "com/iqiyi/trojan/Trojan",
@@ -211,25 +222,20 @@ public class TrojanPluginMethodVisitor extends AdviceAdapter {
         mv.visitVarInsn(Opcodes.ASTORE, offset);
         mv.visitVarInsn(Opcodes.ALOAD, offset);
         mv.visitFieldInsn(Opcodes.GETSTATIC, "xiaofei/library/zlang/Library", "NO_RETURN_VALUE", "Ljava/lang/Object;");
-        System.out.println("6");
         Label label = new Label();
         mv.visitJumpInsn(Opcodes.IF_ACMPEQ, label);
-        System.out.println("7");
         if (returnType.equals("void") || returnType.equals("java/lang/Void")) {
-            System.out.println("8");
             mv.visitInsn(Opcodes.RETURN);
-            System.out.println("9");
         } else {
-            System.out.println("10");
             mv.visitVarInsn(Opcodes.ALOAD, offset);
             String tmpReturnType = PRIMITIVE_CLASSES.get(returnType);
             if (tmpReturnType == null) {
-                System.out.println("11");
+                mv.visitTypeInsn(Opcodes.INSTANCEOF, returnType);
+                mv.visitJumpInsn(Opcodes.IFEQ, label);
+                mv.visitVarInsn(Opcodes.ALOAD, offset);
                 mv.visitTypeInsn(Opcodes.CHECKCAST, returnType);
                 mv.visitInsn(Opcodes.ARETURN);
-                System.out.println("12");
             } else {
-                System.out.println("13");
                 mv.visitTypeInsn(Opcodes.INSTANCEOF, tmpReturnType);
                 mv.visitJumpInsn(Opcodes.IFEQ, label);
                 mv.visitVarInsn(Opcodes.ALOAD, offset);
@@ -240,14 +246,22 @@ public class TrojanPluginMethodVisitor extends AdviceAdapter {
                         "()" + PRIMITIVE_SIGNATURES_SHORT_FORMS,
                         false);
                 mv.visitInsn(PRIMITIVE_RETURNS.get(returnType));
-                System.out.println("14");
             }
-            System.out.println("15");
-            mv.visitInsn(Opcodes.NOP);
-            System.out.println("16");
-            mv.visitLabel(label);
-            System.out.println("17");
         }
+        mv.visitLabel(label);
+        Object[] objects = new Object[parameterNumber + 2];
+        objects[0] = className;
+        for (int i = 1; i <= parameterNumber; ++i) {
+            String parameterType = parameterTypes.get(i - 1);
+            Integer frame = PRIMITIVE_FRAMES.get(parameterType);
+            if (frame != null) {
+                objects[i] = frame;
+            } else {
+                objects[i] = parameterType;
+            }
+        }
+        objects[parameterNumber + 1] = "java/lang/Object";
+        mv.visitFrame(Opcodes.F_NEW, parameterNumber + 2, objects, 0, new Object[0]);
     }
 
     @Override
@@ -269,6 +283,21 @@ public class TrojanPluginMethodVisitor extends AdviceAdapter {
             super.visitLocalVariable(s, s1, s2, label, label1, i);
         }
     }
+
+    @Override
+    public void visitFrame(int i, int i1, Object[] objects, int i2, Object[] objects1) {
+        System.out.println("Frame " + i + " " + i1 + " " + i2);
+        for (int j = 0; j < objects.length; ++j) {
+            System.out.print(" " + objects[j]);
+        }
+        System.out.println();
+        for (int j = 0; j < objects1.length; ++j) {
+            System.out.print(" " + objects1[j]);
+        }
+        System.out.println();
+        super.visitFrame(i, i1, objects, i2, objects1);
+    }
+
 
     @Override
     public AnnotationVisitor visitLocalVariableAnnotation(int i, TypePath typePath, Label[] labels, Label[] labels1, int[] ints, String s, boolean b) {

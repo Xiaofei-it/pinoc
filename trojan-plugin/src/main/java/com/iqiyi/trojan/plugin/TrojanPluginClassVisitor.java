@@ -15,7 +15,13 @@ public class TrojanPluginClassVisitor extends ClassVisitor {
 
     public TrojanPluginClassVisitor(String name, ClassWriter cw) {
         super(Opcodes.ASM5, cw);
-        this.className = name;
+    }
+
+    @Override
+    public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+        super.visit(version, access, name, signature, superName, interfaces);
+        className = name;
+        System.out.println("Name " + name + " signature " + signature + " superName " + superName);
     }
 
     @Override
@@ -23,5 +29,6 @@ public class TrojanPluginClassVisitor extends ClassVisitor {
         MethodVisitor mv = cv.visitMethod(access, name, desc, signature, exceptions);
         System.out.println("Name " + name + " signature " + signature + " desc " + desc);
         return new TrojanPluginMethodVisitor(api, mv, access, className, name, desc);
+        //return new TestMethodVisitor(api, mv);
     }
 }
