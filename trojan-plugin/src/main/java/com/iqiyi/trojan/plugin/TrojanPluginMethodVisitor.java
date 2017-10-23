@@ -227,8 +227,32 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
         if (returnType.equals("void") || returnType.equals("java/lang/Void")) {
             mv.visitInsn(Opcodes.RETURN);
         } else {
+            Label label1 = new Label();
             mv.visitVarInsn(Opcodes.ALOAD, offset);
+            mv.visitJumpInsn(Opcodes.IFNONNULL, label1);
+            mv.visitInsn(Opcodes.ACONST_NULL);
             String tmpReturnType = PRIMITIVE_CLASSES.get(returnType);
+            if (tmpReturnType == null) {
+                mv.visitInsn(Opcodes.ARETURN);
+            } else {
+                mv.visitInsn(PRIMITIVE_RETURNS.get(returnType));
+            }
+            mv.visitLabel(label1);
+            Object[] objects = new Object[parameterNumber + 2];
+            objects[0] = className;
+            for (int i = 1; i <= parameterNumber; ++i) {
+                String parameterType = parameterTypes.get(i - 1);
+                Integer frame = PRIMITIVE_FRAMES.get(parameterType);
+                if (frame != null) {
+                    objects[i] = frame;
+                } else {
+                    objects[i] = parameterType;
+                }
+            }
+            objects[parameterNumber + 1] = "java/lang/Object";
+            mv.visitFrame(Opcodes.F_NEW, parameterNumber + 2, objects, 0, new Object[0]);
+
+            mv.visitVarInsn(Opcodes.ALOAD, offset);
             if (tmpReturnType == null) {
                 mv.visitTypeInsn(Opcodes.INSTANCEOF, returnType);
                 mv.visitJumpInsn(Opcodes.IFEQ, label);

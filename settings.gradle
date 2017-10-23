@@ -1,2 +1,2 @@
-//include ':app', ':trojan-library'
-include ':trojan-plugin'
+include ':app', ':trojan-library'
+//include ':trojan-plugin'

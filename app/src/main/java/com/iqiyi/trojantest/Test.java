@@ -44,10 +44,13 @@ public class Test {
         result = null;
         return null;
     }
-
+*/
     private Integer simple1(int a) {
         Object result = Trojan.onEnterMethod("MainActivity", "g", "()V", this, new Object[]{a});
         if (result != Library.NO_RETURN_VALUE) {
+            if (result == null) {
+                return null;
+            }
             if (result instanceof Integer) {
                 return (Integer) result;
             }
@@ -55,7 +58,7 @@ public class Test {
         int s = 0;
         int k = 1;
         return s + k + 1;
-    }*/
+    }
     private Integer simple2(int a) {
         int s = 0;
         int k = 1;
