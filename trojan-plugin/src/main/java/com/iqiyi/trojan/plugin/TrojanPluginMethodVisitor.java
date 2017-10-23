@@ -159,6 +159,7 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
         }
         ++pos;
         returnType = (String) obtainType(desc, pos)[1];
+        System.out.println("return type = " + returnType);
     }
 
     private void pushConst(int number) {
@@ -224,7 +225,7 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
         mv.visitFieldInsn(Opcodes.GETSTATIC, "xiaofei/library/zlang/Library", "NO_RETURN_VALUE", "Ljava/lang/Object;");
         Label label = new Label();
         mv.visitJumpInsn(Opcodes.IF_ACMPEQ, label);
-        if (returnType.equals("void") || returnType.equals("java/lang/Void")) {
+        if (returnType.equals("void")) {
             mv.visitInsn(Opcodes.RETURN);
         } else if (returnType.equals("java/lang/Void")) {
             mv.visitInsn(Opcodes.ACONST_NULL);
