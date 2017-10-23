@@ -45,7 +45,7 @@ public class Test {
         return null;
     }
 */
-    private Integer simple1(int a) {
+    private Integer returnValueInteger1(int a) {
         Object result = Trojan.onEnterMethod("MainActivity", "g", "()V", this, new Object[]{a});
         if (result != Library.NO_RETURN_VALUE) {
             if (result == null) {
@@ -59,9 +59,36 @@ public class Test {
         int k = 1;
         return s + k + 1;
     }
-    private Integer simple2(int a) {
+    private Integer returnValueInteger2(int a) {
         int s = 0;
         int k = 1;
         return s + k + 1;
     }
+
+    private int returnValueInt1(int a) {
+        Object result = Trojan.onEnterMethod("MainActivity", "g", "()V", this, new Object[]{a});
+        if (result != Library.NO_RETURN_VALUE) {
+            if (result instanceof Integer) {
+                return (Integer) result;
+            }
+        }
+        int s = 0;
+        int k = 1;
+        return s + k + 1;
+    }
+
+    private int returnValueInt2(int a) {
+        int s = 0;
+        int k = 1;
+        return s + k + 1;
+    }
+
+    private void void1(Boolean a, int b) {
+        a = (b == b);
+    }
+
+//    private Void void2(Boolean a, int b) {
+//        a = (b == b);
+//        return null;
+//    }
 }
