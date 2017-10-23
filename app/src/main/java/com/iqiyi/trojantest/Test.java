@@ -87,7 +87,15 @@ public class Test {
         a = (b == b);
     }
 
-//    private Void void2(Boolean a, int b) {
+    private Void void2(Boolean a, int b) {
+        return null;
+    }
+
+//    private Void void3(Boolean a, int b) {
+//        Object result = Trojan.onEnterMethod("MainActivity", "g", "()V", this, new Object[]{a});
+//        if (result != Library.NO_RETURN_VALUE) {
+//            return null;
+//        }
 //        a = (b == b);
 //        return null;
 //    }

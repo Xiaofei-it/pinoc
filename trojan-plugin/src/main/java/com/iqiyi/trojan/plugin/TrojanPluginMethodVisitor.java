@@ -226,9 +226,9 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
         mv.visitJumpInsn(Opcodes.IF_ACMPEQ, label);
         if (returnType.equals("void") || returnType.equals("java/lang/Void")) {
             mv.visitInsn(Opcodes.RETURN);
-//        } if (returnType.equals("java/lang/Void")) {
-//            mv.visitInsn(Opcodes.ACONST_NULL);
-//            mv.visitInsn(Opcodes.ARETURN);
+        } else if (returnType.equals("java/lang/Void")) {
+            mv.visitInsn(Opcodes.ACONST_NULL);
+            mv.visitInsn(Opcodes.ARETURN);
         } else {
             String tmpReturnType = PRIMITIVE_CLASSES.get(returnType);
             if (tmpReturnType == null) {
