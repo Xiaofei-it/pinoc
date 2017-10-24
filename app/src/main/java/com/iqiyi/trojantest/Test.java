@@ -21,134 +21,6 @@ public class Test {
         }
         System.out.println();
     }
-    private int g2(String a, MainActivity j, Boolean k) {
-        Object result = Trojan.onEnterMethod("MainActivity", "g", "()V", this, new Object[]{a,j ,k});
-        if (result != Library.NO_RETURN_VALUE) {
-            if (result instanceof Integer) {
-                return (int) result;
-            }
-        }
-        @U int kk = -9;
-        if (new Random().nextInt() > kk) {
-            return kk;
-        }
-        ++kk;
-        return kk;
-    }
-
-    private Integer g3() {
-        Object result = Trojan.onEnterMethod("MainActivity", "g", "()V", this, new Object[]{});
-        if (result != Library.NO_RETURN_VALUE) {
-            if (result instanceof Integer) {
-                return (Integer) result;
-            }
-        }
-        result = null;
-        return null;
-    }
-
-    private Integer returnValueInteger1(int a) {
-        Object result = Trojan.onEnterMethod("MainActivity", "g", "()V", this, new Object[]{a});
-        if (result != Library.NO_RETURN_VALUE) {
-            if (result == null) {
-                return null;
-            }
-            if (result instanceof Integer) {
-                return (Integer) result;
-            }
-        }
-        int s = 0;
-        int k = 1;
-        return s + k + 1;
-    }
-    private Integer returnValueInteger2(int a) {
-        int s = 0;
-        int k = 1;
-        return s + k + 1;
-    }
-
-    private int returnValueInt1(Integer a) {
-        Object result = Trojan.onEnterMethod("MainActivity", "g", "()V", this, new Object[]{a});
-        if (result != Library.NO_RETURN_VALUE) {
-            if (result instanceof Integer) {
-                return (Integer) result;
-            }
-        }
-        int s = 0;
-        int k = 1;
-        return s + k + 1;
-    }
-
-    private int returnValueInt2(Integer a) {
-        int s = 0;
-        int k = 1;
-        return s + k + 1;
-    }
-
-    private void void1(Boolean a, int b) {
-        a = (b == b);
-    }
-
-    private Void void2(Boolean a, int b) {
-        return null;
-    }
-
-    private Void void3(Boolean a, int b) {
-        Object result = Trojan.onEnterMethod("MainActivity", "g", "()V", this, new Object[]{a});
-        if (result != Library.NO_RETURN_VALUE) {
-            return null;
-        }
-        a = (b == b);
-        return null;
-    }
-
-    private Boolean returnBoolean1(Boolean a, boolean b) {
-        int s = 0;
-        int k = 1;
-        return true;
-    }
-
-    private boolean returnBoolean2(Boolean a, boolean b) {
-        int s = 0;
-        int k = 1;
-        return true;
-    }
-
-    private byte returnByte1(Byte a, byte b) {
-        int s = 0;
-        int k = 1;
-        return (byte) (a + b);
-    }
-
-    private Byte returnByte2(Byte a, byte b) {
-        int s = 0;
-        int k = 1;
-        return (byte) (a + b);
-    }
-
-    private Short returnShort1(Short a, short b) {
-        int s = 0;
-        int k = 1;
-        return (short)(a + b);
-    }
-
-    private short returnShort2(Short a, short b) {
-        int s = 0;
-        int k = 1;
-        return (short) (a + b);
-    }
-
-    private int returnInt1(Integer a, int b) {
-        int s = 0;
-        int k = 1;
-        return a + b;
-    }
-
-    private Integer returnInt2(Integer a, int b) {
-        int s = 0;
-        int k = 1;
-        return a + b;
-    }
 
 //    private Long returnLong1(Long a, long b) {
 //        int s = 0;
@@ -162,7 +34,7 @@ public class Test {
 //        return a + b;
 //    }
 //
-    private long returnLong1(long a) {
+    private long returnLong1(Long a) {
 //        Object result = Trojan.onEnterMethod("MainActivity", "g", "()V", this, new Object[]{a});
 //        if (result != Library.NO_RETURN_VALUE) {
 //            if (result instanceof Long) {
