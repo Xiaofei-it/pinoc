@@ -19,8 +19,7 @@ public class X2 {
         return (int) a * 2;
     }
 
-    public int g2(int a, int b) {
-        int c = a + b;
-        return c * 2;
+    public int g2(long a) {
+        return (int) a * 2;
     }
 }
