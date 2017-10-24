@@ -76,7 +76,7 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
             put("char", Opcodes.ILOAD);
             put("short", Opcodes.ILOAD);
             put("int", Opcodes.ILOAD);
-            put("long", Opcodes.LLOD);
+            put("long", Opcodes.LLOAD);
             put("float", Opcodes.FLOAD);
             put("double", Opcodes.DLOAD);
         }
@@ -290,22 +290,35 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
     }
 
     @Override
-    public void visitVarInsn(int i, int i1) {
-        System.out.println("visit var insn " + i +  " " + i1);
-        super.visitVarInsn(i, i1);
+    public void visitVarInsn(int opcode, int var) {
+        System.out.println("visit var insn1 " + opcode +  " " + var + " " + parameterTypes.size());
+        if (var <= parameterTypes.size()) {
+            System.out.println("visit var insn2 " + opcode +  " " + var);
+            super.visitVarInsn(opcode, var);
+        } else {
+            System.out.println("visit var insn3 " + opcode +  " " + (var + 1));
+            super.visitVarInsn(opcode, var + 1);
+        }
     }
 
     @Override
-    public void visitIincInsn(int i, int i1) {
-        System.out.println("visit iinc insn " + i +  " " + i1);
-        super.visitIincInsn(i, i1);
+    public void visitIincInsn(int var, int increment) {
+        System.out.println("visit iinc insn " + var +  " " + increment);
+        if (var <= parameterTypes.size()) {
+            super.visitIincInsn(var, increment);
+        } else {
+            super.visitIincInsn(var + 1, increment);
+        }
     }
 
     @Override
-    public void visitLocalVariable(String s, String s1, String s2, Label label, Label label1, int i) {
-        System.out.println("visitLocalVariable " + s +  " " + s1 + " " + s2 + " " + label + " " + label1 + "  " + i);
-        if (!s.equals("result")) {
-            super.visitLocalVariable(s, s1, s2, label, label1, i);
+    public void visitLocalVariable(String name, String desc, String signature, Label start, Label end, int index) {
+        System.out.println("visitLocalVariable " + name +  " " + desc + " " + signature + " " + start + " " + end + "  " + index);
+        int size = parameterTypes.size();
+        if (index <= size) {
+            super.visitLocalVariable(name, desc, signature, start, end, index);
+        } else if (index > size + 1) {
+            super.visitLocalVariable(name, desc, signature, start, end, index + 1);
         }
     }
 
@@ -325,9 +338,7 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
 
 
     @Override
-    public AnnotationVisitor visitLocalVariableAnnotation(int i, TypePath typePath, Label[] labels, Label[] labels1, int[] ints, String s, boolean b) {
-
-        System.out.println("visitLocalVariableAnnotation " + i +  " " + s);
-        return super.visitLocalVariableAnnotation(i, typePath, labels, labels1, ints, s, b);
+    public AnnotationVisitor visitLocalVariableAnnotation(int typeRef, TypePath typePath, Label[] start, Label[] end, int[] index, String desc, boolean visible) {
+        return super.visitLocalVariableAnnotation(typeRef, typePath, start, end, index, desc, visible);
     }
 }

@@ -45,7 +45,7 @@ public class TestMethodVisitor2 extends MethodVisitor {
     @Override
     public void visitVarInsn(int opcode, int var) {
         mv.visitVarInsn(opcode, var);
-        System.out.println("visitVarInsn " + opcode + " " + var);
+        System.out.println("visitVarInsn ::::" + opcode + " " + var);
     }
 
     @Override
