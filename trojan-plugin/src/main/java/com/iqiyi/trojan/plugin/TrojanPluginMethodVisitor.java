@@ -76,7 +76,7 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
             put("char", Opcodes.ILOAD);
             put("short", Opcodes.ILOAD);
             put("int", Opcodes.ILOAD);
-            put("long", Opcodes.LLOAD);
+            put("long", Opcodes.LLOD);
             put("float", Opcodes.FLOAD);
             put("double", Opcodes.DLOAD);
         }
