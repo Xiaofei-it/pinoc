@@ -13,7 +13,7 @@ repositories {
     jcenter()
 }
 group='com.iqiyi.trojan.plugin'
-version='0.0.41'
+version='0.0.49'
 
 uploadArchives {
     repositories {
