@@ -28,7 +28,7 @@ public class TrojanPluginClassVisitor extends ClassVisitor {
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
         MethodVisitor mv = cv.visitMethod(access, name, desc, signature, exceptions);
         System.out.println("Name " + name + " signature " + signature + " desc " + desc);
-        if (name.equals("<init>")) {
+        if (name.equals("<init>") || name.equals("<clinit>")) {
             return mv;
         }
         return new TrojanPluginMethodVisitor(api, mv, access, className, name, desc);

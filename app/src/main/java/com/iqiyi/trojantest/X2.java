@@ -9,7 +9,28 @@ import xiaofei.library.zlang.Library;
  */
 
 public class X2 {
+    long a;
+    int b;
+    String c;
+    static long a2;
+    static int b2;
+    static String c2;
+//    static {
+//        a2 = b2 = 0;
+//        c2 = "";
+//    }
+    {
+        a = 0;
+        b = 1;
+        c = "";
+        System.gc();
+    }
+    public X2(int d){
+        a = b = d;
+        c = "" +d;
+    }
     public int g(long a, double b, int c, boolean d) {
+        a2=90;
         Object r = Trojan.onEnterMethod("com/iqiyi/trojantest/X", "g", "(II)I", this, new Object[]{Long.valueOf(a), Double.valueOf(b), Integer.valueOf(c), Boolean.valueOf(d)});
         if(r != Library.NO_RETURN_VALUE) {
             if (r instanceof Integer) {
