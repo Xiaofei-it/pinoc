@@ -29,7 +29,14 @@ public class X2 {
         a = b = d;
         c = "" +d;
     }
-    public int g(long a, double b, int c, boolean d) {
+    public static void s() {
+
+    }
+
+    public void st() {
+
+    }
+    public int g1(long a, double b, int c, boolean d) {
         a2=90;
         Object r = Trojan.onEnterMethod("com/iqiyi/trojantest/X", "g", "(II)I", this, new Object[]{Long.valueOf(a), Double.valueOf(b), Integer.valueOf(c), Boolean.valueOf(d)});
         if(r != Library.NO_RETURN_VALUE) {
@@ -42,6 +49,22 @@ public class X2 {
     }
 
     public int g2(long a) {
+        return (int) a * 2;
+    }
+
+    public static int g3(long a, double b, int c, boolean d) {
+        a2=90;
+        Object r = Trojan.onEnterMethod("com/iqiyi/trojantest/X", "g", "(II)I", null, new Object[]{Long.valueOf(a), Double.valueOf(b), Integer.valueOf(c), Boolean.valueOf(d)});
+        if(r != Library.NO_RETURN_VALUE) {
+            if (r instanceof Integer) {
+                return (int) r;
+            }
+        }
+        double e = b + c;
+        return (int) e * 2;
+    }
+
+    public static int g4(long a) {
         return (int) a * 2;
     }
 }

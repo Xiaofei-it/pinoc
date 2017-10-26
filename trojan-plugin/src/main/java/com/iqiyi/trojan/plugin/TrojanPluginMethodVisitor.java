@@ -30,6 +30,8 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
 
     private int resultOffset;
 
+    private boolean isStatic;
+
     private static final HashMap<Character, String> PRIMITIVE_SIGNATURES = new HashMap<Character, String>() {
         {
             put('Z', "boolean");
@@ -130,6 +132,7 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
         this.className = className;
         this.methodName = methodName;
         this.methodSignature = desc;
+        this.isStatic = (access & Opcodes.ACC_STATIC) != 0;
     }
 
     private Object[] obtainType(String desc, int start) {
@@ -191,26 +194,21 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
         }
     }
 
-//    private Object[] toArray(ArrayList<Object> list) {
-//        int length = list.size();
-//        Object[] result = new Object[length];
-//        for (int i = 0; i < length; ++i) {
-//            result[i] = list.get(i);
-//        }
-//        return result;
-//    }
-
     @Override
     protected void onMethodEnter() {
         System.out.println("onMethodEnter");
         mv.visitLdcInsn(className);
         mv.visitLdcInsn(methodName);
         mv.visitLdcInsn(methodSignature);
-        mv.visitVarInsn(Opcodes.ALOAD, 0);
+        if (isStatic) {
+            mv.visitInsn(Opcodes.ACONST_NULL);
+        } else {
+            mv.visitVarInsn(Opcodes.ALOAD, 0);
+        }
         int parameterNumber = parameterTypes.size();
         pushConst(parameterNumber);
         mv.visitTypeInsn(Opcodes.ANEWARRAY, "java/lang/Object");
-        int offset = 1;
+        int offset = isStatic ? 0 : 1;
         for (int i = 0; i < parameterNumber; ++i) {
             mv.visitInsn(Opcodes.DUP);
             pushConst(i);
@@ -257,27 +255,7 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
                 mv.visitInsn(Opcodes.ACONST_NULL);
                 mv.visitInsn(Opcodes.ARETURN);
                 mv.visitLabel(label1);
-                Object[] objects = new Object[parameterNumber + 2];
-                objects[0] = className;
-//                ArrayList<Object> objects = new ArrayList<>();
-//                objects.add(className);
-                for (int i = 1; i <= parameterNumber; ++i) {
-                    String parameterType = parameterTypes.get(i - 1);
-                    Integer frame = PRIMITIVE_FRAMES.get(parameterType);
-                    if (frame != null) {
-//                        objects.add(frame);
-//                        if (frame.equals(Opcodes.LONG) || frame.equals(Opcodes.DOUBLE)) {
-//                            objects.add(frame);
-//                        }
-                        objects[i] = frame;
-                    } else {
-//                        objects.add(parameterNumber);
-                        objects[i] = parameterType;
-                    }
-                }
-//                objects.add("java/lang/Object");
-                objects[parameterNumber + 1] = "java/lang/Object";
-                mv.visitFrame(Opcodes.F_NEW, parameterNumber + 2, objects, 0, new Object[0]);
+                generateFrame();
             }
             mv.visitVarInsn(Opcodes.ALOAD, offset);
             if (tmpReturnType == null) {
@@ -300,30 +278,49 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
             }
         }
         mv.visitLabel(label);
-//        ArrayList<Object> objects = new ArrayList<>();
-//        objects.add(className);
+        generateFrame();
+    }
+
+    private void generateFrame() {
+        if (isStatic) {
+            generateFrameStatic();
+        } else {
+            generateFrameNonStatic();
+        }
+    }
+
+    private void generateFrameStatic() {
+        int parameterNumber = parameterTypes.size();
+        Object[] objects = new Object[parameterNumber + 1];
+        for (int i = 0; i < parameterNumber; ++i) {
+            String parameterType = parameterTypes.get(i);
+            Integer frame = PRIMITIVE_FRAMES.get(parameterType);
+            if (frame != null) {
+                objects[i] = frame;
+            } else {
+                objects[i] = parameterType;
+            }
+        }
+        objects[parameterNumber] = "java/lang/Object";
+        mv.visitFrame(Opcodes.F_NEW, parameterNumber + 1, objects, 0, new Object[0]);
+    }
+
+    private void generateFrameNonStatic() {
+        int parameterNumber = parameterTypes.size();
         Object[] objects = new Object[parameterNumber + 2];
         objects[0] = className;
         for (int i = 1; i <= parameterNumber; ++i) {
             String parameterType = parameterTypes.get(i - 1);
             Integer frame = PRIMITIVE_FRAMES.get(parameterType);
             if (frame != null) {
-//                objects.add(frame);
-//                if (frame.equals(Opcodes.LONG) || frame.equals(Opcodes.DOUBLE)) {
-//                    objects.add(frame);
-//                }
                 objects[i] = frame;
             } else {
-//                objects.add(parameterNumber);
                 objects[i] = parameterType;
             }
         }
-//        objects.add("java/lang/Object");
-//        mv.visitFrame(Opcodes.F_NEW, parameterNumber + 2, toArray(objects), 0, new Object[0]);
         objects[parameterNumber + 1] = "java/lang/Object";
         mv.visitFrame(Opcodes.F_NEW, parameterNumber + 2, objects, 0, new Object[0]);
     }
-
     @Override
     public void visitLabel(Label label) {
         System.out.println("visitLabel " + label);
@@ -335,7 +332,8 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
         // 0, 1    3   -> 0, 1,   4
         // 0, 1, 3   4  -> 0, 1, 3,   5
         System.out.println("visit var insn1 " + opcode +  " " + var + " " + parameterTypes.size());
-        if (var < resultOffset) {
+        int threshold = resultOffset;
+        if (var < threshold) {
             System.out.println("visit var insn2 " + opcode +  " " + var);
             mv.visitVarInsn(opcode, var);
         } else {
@@ -347,7 +345,8 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
     @Override
     public void visitIincInsn(int var, int increment) {
         System.out.println("visit iinc insn " + var +  " " + increment);
-        if (var < resultOffset) {
+        int threshold = resultOffset;
+        if (var < threshold) {
             mv.visitIincInsn(var, increment);
         } else {
             mv.visitIincInsn(var + 1, increment);
