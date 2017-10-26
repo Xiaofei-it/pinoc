@@ -10,16 +10,18 @@ import xiaofei.library.zlang.Library;
 public class MainActivity extends AppCompatActivity {
 
 
+    private int iii = 90;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //g1("a", "j", true, 8, 8, 8.0, 8.0f, 8L, 'c', this, false);
-        //g2("a", "j", true, 8, 8, 8.0, 8.0f, 8L, 'c', this, false);
+        g1("a", "j", true, 8, 8, 8.0f, this, false);
+        g2("a", "j", true, 8, 8, 8.0, 8.0f, 8L, 'c', this, false);
+        new Test().g1("7u", iii);
     }
 
-    private void g1(String a, String b, boolean c, Integer d, int e, double f, /*MainActivity j,*/ Boolean k) {
-        Object result = Trojan.onEnterMethod("MainActivity", "g", "()V", this, new Object[]{a, b, c, d, e, f, k});
+    private void g1(String a, String b, boolean c, Integer d, int e, double f, MainActivity j, Boolean k) {
+        Object result = Trojan.onEnterMethod("MainActivity", "g", "()V", this, new Object[]{a, b, c, d, e, f, j, k});
         if (result != Library.NO_RETURN_VALUE) {
             return;
         }
