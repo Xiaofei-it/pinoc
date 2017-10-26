@@ -197,6 +197,7 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
 //        }
 //        return result;
 //    }
+
     @Override
     protected void onMethodEnter() {
         System.out.println("onMethodEnter");
@@ -207,20 +208,24 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
         int parameterNumber = parameterTypes.size();
         pushConst(parameterNumber);
         mv.visitTypeInsn(Opcodes.ANEWARRAY, "java/lang/Object");
+        int offset = 1;
         for (int i = 0; i < parameterNumber; ++i) {
             mv.visitInsn(Opcodes.DUP);
             pushConst(i);
             String parameterType = parameterTypes.get(i);
             String className = PRIMITIVE_CLASSES.get(parameterType);
             if (className != null) {
-                mv.visitVarInsn(PRIMITIVE_LOADS.get(parameterType), i + 1);
+                mv.visitVarInsn(PRIMITIVE_LOADS.get(parameterType), offset++);
                 mv.visitMethodInsn(Opcodes.INVOKESTATIC,
                         PRIMITIVE_CLASSES.get(parameterType),
                         "valueOf",
                         PRIMITIVE_VALUE_OF_SIGNATURES.get(parameterType),
                         false);
+                if (parameterType.equals("long") || parameterType.equals("double")) {
+                    ++offset;
+                }
             } else {
-                mv.visitVarInsn(Opcodes.ALOAD, i + 1);
+                mv.visitVarInsn(Opcodes.ALOAD, offset++);
             }
             mv.visitInsn(Opcodes.AASTORE);
         }
@@ -230,7 +235,6 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
                 "onEnterMethod",
                 "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;",
                 false);
-        int offset = parameterNumber + 1;
         mv.visitVarInsn(Opcodes.ASTORE, offset);
         mv.visitVarInsn(Opcodes.ALOAD, offset);
         mv.visitFieldInsn(Opcodes.GETSTATIC, "xiaofei/library/zlang/Library", "NO_RETURN_VALUE", "Ljava/lang/Object;");
