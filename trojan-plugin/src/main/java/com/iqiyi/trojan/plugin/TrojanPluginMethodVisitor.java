@@ -28,6 +28,8 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
 
     private String methodSignature;
 
+    private int resultOffset;
+
     private static final HashMap<Character, String> PRIMITIVE_SIGNATURES = new HashMap<Character, String>() {
         {
             put('Z', "boolean");
@@ -229,6 +231,7 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
             }
             mv.visitInsn(Opcodes.AASTORE);
         }
+        resultOffset = offset;
         mv.visitMethodInsn(
                 Opcodes.INVOKESTATIC,
                 "com/iqiyi/trojan/Trojan",
@@ -329,8 +332,10 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
 
     @Override
     public void visitVarInsn(int opcode, int var) {
+        // 0, 1    3   -> 0, 1,   4
+        // 0, 1, 3   4  -> 0, 1, 3,   5
         System.out.println("visit var insn1 " + opcode +  " " + var + " " + parameterTypes.size());
-        if (var <= parameterTypes.size()) {
+        if (var < resultOffset) {
             System.out.println("visit var insn2 " + opcode +  " " + var);
             mv.visitVarInsn(opcode, var);
         } else {
@@ -342,7 +347,7 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
     @Override
     public void visitIincInsn(int var, int increment) {
         System.out.println("visit iinc insn " + var +  " " + increment);
-        if (var <= parameterTypes.size()) {
+        if (var < resultOffset) {
             mv.visitIincInsn(var, increment);
         } else {
             mv.visitIincInsn(var + 1, increment);
@@ -352,8 +357,7 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
     @Override
     public void visitLocalVariable(String name, String desc, String signature, Label start, Label end, int index) {
         System.out.println("visitLocalVariable1 " + name +  " " + desc + " " + signature + " " + start + " " + end + "  " + index);
-        int size = parameterTypes.size();
-        if (index <= size) {
+        if (index < resultOffset) {
             System.out.println("visitLocalVariable2 " + name +  " " + desc + " " + signature + " " + start + " " + end + "  " + index);
             mv.visitLocalVariable(name, desc, signature, start, end, index);
         } else {

@@ -22,18 +22,18 @@ public class Test {
         System.out.println();
     }
 
-//    private Long returnLong1(Long a, long b) {
-//        int s = 0;
-//        int k = 1;
-//        return a + b;
-//    }
-//
-//    private long returnLong2(Long a, long b) {
-//        int s = 0;
-//        int k = 1;
-//        return a + b;
-//    }
-//
+    private Long returnLong1(Long a, long b) {
+        int s = 0;
+        int k = 1;
+        return a + b;
+    }
+
+    private long returnLong2(Long a, long b) {
+        int s = 0;
+        int k = 1;
+        return a + b;
+    }
+
     private long returnLong1(Long a) {
 //        Object result = Trojan.onEnterMethod("MainActivity", "g", "()V", this, new Object[]{a});
 //        if (result != Library.NO_RETURN_VALUE) {
@@ -89,11 +89,11 @@ public class Test {
         return a;
     }
 
-//    private Double returnDouble1(double a) {
-//        int s = 0;
-//        int k = 1;
-//        return a;
-//    }
+    private Double returnDouble1(double a) {
+        int s = 0;
+        int k = 1;
+        return a;
+    }
 
     private double returnDouble2(Double a) {
         int s = 0;
