@@ -1,7 +1,10 @@
 package com.iqiyi.trojan.plugin;
 
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.Attribute;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.TypePath;
 
 import java.util.ArrayList;
 
@@ -104,4 +107,33 @@ public class TestMethodVisitor extends MethodVisitor {
         super.visitIincInsn(var, increment);
     }
 
+    @Override
+    public void visitParameter(String name, int access) {
+        System.out.println("visitParameter " + name + " " + access);
+        super.visitParameter(name, access);
+    }
+
+    @Override
+    public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
+        System.out.println("visitAnnotation " + desc + " " + visible);
+        return super.visitAnnotation(desc, visible);
+    }
+
+    @Override
+    public void visitAttribute(Attribute attr) {
+        System.out.println("visitAttribute " + attr.type + " " + attr.isCodeAttribute() + " " + attr.isUnknown());
+        super.visitAttribute(attr);
+    }
+
+    @Override
+    public void visitLocalVariable(String name, String desc, String signature, Label start, Label end, int index) {
+        System.out.println("visitLocalVariable " + name + " " + desc + " " + signature + " " + start + " " + end + " " + index);
+        super.visitLocalVariable(name, desc, signature, start, end, index);
+    }
+
+    @Override
+    public void visitMaxs(int maxStack, int maxLocals) {
+        System.out.println("visitMaxs " + maxStack + " " + maxLocals);
+        super.visitMaxs(maxStack, maxLocals);
+    }
 }

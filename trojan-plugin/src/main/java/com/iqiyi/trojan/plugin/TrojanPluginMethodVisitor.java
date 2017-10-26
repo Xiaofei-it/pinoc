@@ -1,5 +1,6 @@
 package com.iqiyi.trojan.plugin;
 
+import org.gradle.internal.impldep.aQute.bnd.osgi.resource.FilterParser;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ByteVector;
 import org.objectweb.asm.Label;
@@ -187,6 +188,15 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
                 break;
         }
     }
+
+//    private Object[] toArray(ArrayList<Object> list) {
+//        int length = list.size();
+//        Object[] result = new Object[length];
+//        for (int i = 0; i < length; ++i) {
+//            result[i] = list.get(i);
+//        }
+//        return result;
+//    }
     @Override
     protected void onMethodEnter() {
         System.out.println("onMethodEnter");
@@ -242,15 +252,23 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
                 mv.visitLabel(label1);
                 Object[] objects = new Object[parameterNumber + 2];
                 objects[0] = className;
+//                ArrayList<Object> objects = new ArrayList<>();
+//                objects.add(className);
                 for (int i = 1; i <= parameterNumber; ++i) {
                     String parameterType = parameterTypes.get(i - 1);
                     Integer frame = PRIMITIVE_FRAMES.get(parameterType);
                     if (frame != null) {
+//                        objects.add(frame);
+//                        if (frame.equals(Opcodes.LONG) || frame.equals(Opcodes.DOUBLE)) {
+//                            objects.add(frame);
+//                        }
                         objects[i] = frame;
                     } else {
+//                        objects.add(parameterNumber);
                         objects[i] = parameterType;
                     }
                 }
+//                objects.add("java/lang/Object");
                 objects[parameterNumber + 1] = "java/lang/Object";
                 mv.visitFrame(Opcodes.F_NEW, parameterNumber + 2, objects, 0, new Object[0]);
             }
@@ -275,17 +293,26 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
             }
         }
         mv.visitLabel(label);
+//        ArrayList<Object> objects = new ArrayList<>();
+//        objects.add(className);
         Object[] objects = new Object[parameterNumber + 2];
         objects[0] = className;
         for (int i = 1; i <= parameterNumber; ++i) {
             String parameterType = parameterTypes.get(i - 1);
             Integer frame = PRIMITIVE_FRAMES.get(parameterType);
             if (frame != null) {
+//                objects.add(frame);
+//                if (frame.equals(Opcodes.LONG) || frame.equals(Opcodes.DOUBLE)) {
+//                    objects.add(frame);
+//                }
                 objects[i] = frame;
             } else {
+//                objects.add(parameterNumber);
                 objects[i] = parameterType;
             }
         }
+//        objects.add("java/lang/Object");
+//        mv.visitFrame(Opcodes.F_NEW, parameterNumber + 2, toArray(objects), 0, new Object[0]);
         objects[parameterNumber + 1] = "java/lang/Object";
         mv.visitFrame(Opcodes.F_NEW, parameterNumber + 2, objects, 0, new Object[0]);
     }
@@ -350,5 +377,10 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
     public AnnotationVisitor visitLocalVariableAnnotation(int typeRef, TypePath typePath, Label[] start, Label[] end, int[] index, String desc, boolean visible) {
         System.out.println("visitLocalVariableAnnotation");
         return super.visitLocalVariableAnnotation(typeRef, typePath, start, end, index, desc, visible);
+    }
+
+    @Override
+    public void visitMaxs(int i, int i1) {
+        super.visitMaxs(0, 0);
     }
 }
