@@ -12,13 +12,16 @@ dependencies {
 repositories {
     jcenter()
 }
-group='com.iqiyi.trojan.plugin'
-version='0.0.57'
+//group='com.iqiyi.trojan.plugin'
+//version='0.0.58'
+//
+//uploadArchives {
+//    repositories {
+//        mavenDeployer {
+//            //repository(url: uri('../repo'))
+//            repository(url: "http://maven.mbd.qiyi.domain/nexus/content/repositories/mbd-show/")
+//        }
+//    }
+//}
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: uri('../repo'))
-        }
-    }
-}
+apply from: project.file('gradle-mvn-push.gradle')
