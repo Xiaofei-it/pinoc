@@ -1,0 +1,27 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+dependencies {
+    compile gradleApi()
+    compile localGroovy()
+    compile 'com.android.tools.build:gradle:2.3.3'
+    compile 'org.ow2.asm:asm:5.0.3'
+    compile 'org.ow2.asm:asm-commons:5.0.3'
+}
+
+repositories {
+    jcenter()
+}
+//group='com.iqiyi.trojan.plugin'
+//version='0.0.58'
+//
+//uploadArchives {
+//    repositories {
+//        mavenDeployer {
+//            //repository(url: uri('../repo'))
+//            repository(url: "http://maven.mbd.qiyi.domain/nexus/content/repositories/mbd-show/")
+//        }
+//    }
+//}
+
+apply from: project.file('gradle-mvn-push.gradle')
