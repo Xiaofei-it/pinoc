@@ -52,6 +52,7 @@ class TrojanCore {
      * @return true if replaced.
      */
     Object onEnterMethod(String className, String methodName, String methodSignature, Object target, Object[] parameters) {
+        Logger.i(TAG, "enter " + className + " " + methodName + " " + methodSignature + " " + target);
         ConcurrentHashMap<String, Library> libraries = mLibraries.get(className);
         if (libraries == null) {
             return Library.NO_RETURN_VALUE;

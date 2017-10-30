@@ -43,6 +43,7 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile project(':trojan-library')
+//    compile project(':trojan-library')
+    compile 'com.iqiyi.ishow.support:trojan:0.0.63'
     testCompile 'junit:junit:4.12'
 }
