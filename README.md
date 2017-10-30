@@ -3,7 +3,7 @@
 ## Usage
 
 ```
-compile 'com.iqiyi.ishow.support:trojan:0.0.63'
+compile 'com.iqiyi.ishow.support:trojan:0.0.64'
 ```
 
 ```
@@ -15,7 +15,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.iqiyi.ishow.support:trojan-plugin:0.0.58'
+        classpath 'com.iqiyi.ishow.support:trojan-plugin:0.0.61'
     }
 }
 ```
