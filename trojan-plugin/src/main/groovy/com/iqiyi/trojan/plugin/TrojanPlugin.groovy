@@ -32,7 +32,7 @@ public class TrojanPlugin extends Transform implements org.gradle.api.Plugin<Pro
 
     @Override
     public Set<QualifiedContent.Scope> getScopes() {
-        return TransformManager.PROJECT;
+        return TransformManager.SCOPE_FULL_PROJECT;
     }
 
     @Override

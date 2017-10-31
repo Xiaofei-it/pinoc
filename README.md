@@ -15,7 +15,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.iqiyi.ishow.support:trojan-plugin:0.0.65'
+        classpath 'com.iqiyi.ishow.support:trojan-plugin:0.0.66'
     }
 }
 ```
