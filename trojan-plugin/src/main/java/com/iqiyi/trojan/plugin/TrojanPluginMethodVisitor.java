@@ -197,9 +197,9 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
     @Override
     protected void onMethodEnter() {
         System.out.println("onMethodEnter");
-        mv.visitLdcInsn(className);
-        mv.visitLdcInsn(methodName);
-        mv.visitLdcInsn(methodSignature);
+        mv.visitLdcInsn("className");
+        mv.visitLdcInsn("methodName");
+        mv.visitLdcInsn("methodSignature");
         if (isStatic) {
             mv.visitInsn(Opcodes.ACONST_NULL);
         } else {
