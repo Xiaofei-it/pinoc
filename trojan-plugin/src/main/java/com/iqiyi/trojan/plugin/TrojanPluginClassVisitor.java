@@ -38,11 +38,10 @@ public class TrojanPluginClassVisitor extends ClassVisitor {
                 || check(access, Opcodes.ACC_BRIDGE)
                 || check(access, Opcodes.ACC_NATIVE)
                 || check(access, Opcodes.ACC_SYNTHETIC)
-                || check(access, Opcodes.ACC_STRICT)
-                || check(access, Opcodes.ACC_NATIVE)) {
+                || check(access, Opcodes.ACC_STRICT)) {
             return mv;
         }
-        if (desc.contains(")V")) {
+        if (check(access, Opcodes.ACC_PUBLIC)) {
             return new TrojanPluginMethodVisitor(api, mv, access, className, name, desc);
         } else {
             return mv;
