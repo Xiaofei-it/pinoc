@@ -42,7 +42,7 @@ public class TrojanPluginClassVisitor extends ClassVisitor {
                 || check(access, Opcodes.ACC_NATIVE)) {
             return mv;
         }
-        if (name.equals("create")) {
+        if (desc.contains(")V")) {
             return new TrojanPluginMethodVisitor(api, mv, access, className, name, desc);
         } else {
             return mv;
