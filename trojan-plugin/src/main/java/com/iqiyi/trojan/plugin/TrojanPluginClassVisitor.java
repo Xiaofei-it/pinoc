@@ -42,7 +42,7 @@ public class TrojanPluginClassVisitor extends ClassVisitor {
                 || check(access, Opcodes.ACC_NATIVE)) {
             return mv;
         }
-        return new TrojanPluginMethodVisitor(api, mv, access, className, name, desc);
-        //return new TestMethodVisitor(api, mv);
+        //return new TrojanPluginMethodVisitor(api, mv, access, className, name, desc);
+        return new TestMethodVisitor(api, mv);
     }
 }
