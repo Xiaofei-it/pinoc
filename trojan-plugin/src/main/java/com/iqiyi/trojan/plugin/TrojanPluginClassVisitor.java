@@ -24,11 +24,22 @@ public class TrojanPluginClassVisitor extends ClassVisitor {
         System.out.println("Name " + name + " signature " + signature + " superName " + superName);
     }
 
+    private static boolean check(int access, int flag) {
+        return (access & flag) != 0;
+    }
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
         MethodVisitor mv = cv.visitMethod(access, name, desc, signature, exceptions);
         System.out.println("Name " + name + " signature " + signature + " desc " + desc);
         if (name.equals("<init>") || name.equals("<clinit>")) {
+            return mv;
+        }
+        if (check(access, Opcodes.ACC_ABSTRACT)
+                || check(access, Opcodes.ACC_BRIDGE)
+                || check(access, Opcodes.ACC_NATIVE)
+                || check(access, Opcodes.ACC_SYNTHETIC)
+                || check(access, Opcodes.ACC_STRICT)
+                || check(access, Opcodes.ACC_NATIVE)) {
             return mv;
         }
         return new TrojanPluginMethodVisitor(api, mv, access, className, name, desc);
