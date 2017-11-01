@@ -2,8 +2,10 @@ package com.iqiyi.trojantest;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.iqiyi.trojan.Trojan;
+
 
 import xiaofei.library.zlang.Library;
 
@@ -18,6 +20,12 @@ public class MainActivity extends AppCompatActivity {
         g1("a", "j", true, 8, 8, 8.0f, this, false);
         g2("a", "j", true, 8, 8, 8.0, 8.0f, 8L, 'c', this, false);
         new Test().g1("7u", iii);
+        try {
+            Bug2.Buffer[] buffers = new Bug2().intercept(null);
+            Log.d("Main", buffers[0].s + " " + buffers[1].s);
+        } catch (Throwable t) {
+
+        }
     }
 
     private void g1(String a, String b, boolean c, Integer d, int e, double f, MainActivity j, Boolean k) {
