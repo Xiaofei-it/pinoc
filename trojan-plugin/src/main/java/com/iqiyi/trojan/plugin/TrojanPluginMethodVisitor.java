@@ -259,10 +259,10 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
             }
             mv.visitVarInsn(Opcodes.ALOAD, offset);
             if (tmpReturnType == null) {
-                mv.visitTypeInsn(Opcodes.INSTANCEOF, returnType);
+                mv.visitTypeInsn(Opcodes.INSTANCEOF, convertIfArray(returnType));
                 mv.visitJumpInsn(Opcodes.IFEQ, label);
                 mv.visitVarInsn(Opcodes.ALOAD, offset);
-                mv.visitTypeInsn(Opcodes.CHECKCAST, returnType);
+                mv.visitTypeInsn(Opcodes.CHECKCAST, convertIfArray(returnType));
                 mv.visitInsn(Opcodes.ARETURN);
             } else {
                 mv.visitTypeInsn(Opcodes.INSTANCEOF, tmpReturnType);

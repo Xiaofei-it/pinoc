@@ -16,11 +16,30 @@ public class Bug {
         return null;
     }
 
-//    private static String[] convertToHex2(Object[] data) {
-//
-//        return null;
-//    }
-
+    private static String[] convertToHex2(Object[] data) {
+//        Object result = Trojan.onEnterMethod("MainActivity", "g", "()V", null, new Object[]{data});
+//        if (result != Library.NO_RETURN_VALUE) {
+//            if (result == null) {
+//                return null;
+//            }
+//            if (result instanceof String[]) {
+//                return (String[]) result;
+//            }
+//        }
+        return null;
+    }
+    private static byte[] convertToHex4(Object[] data) {
+//        Object result = Trojan.onEnterMethod("MainActivity", "g", "()V", null, new Object[]{data});
+//        if (result != Library.NO_RETURN_VALUE) {
+//            if (result == null) {
+//                return null;
+//            }
+//            if (result instanceof byte[]) {
+//                return (byte[]) result;
+//            }
+//        }
+        return null;
+    }
     private static String convertToHex3(Object... data) {
         for (Object o : data) {
             {

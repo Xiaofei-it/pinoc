@@ -47,7 +47,7 @@ public class TrojanPluginClassVisitor extends ClassVisitor {
             System.out.println("Case 1");
             return mv;
         }
-
+//        System.out.println("Case 2");
             return new TrojanPluginMethodVisitor(api, mv, access, className, name, desc);
 //        } else {
 //            return mv;
