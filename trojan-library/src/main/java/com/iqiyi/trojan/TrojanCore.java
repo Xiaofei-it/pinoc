@@ -52,7 +52,8 @@ class TrojanCore {
      * @return true if replaced.
      */
     Object onEnterMethod(String className, String methodName, String methodSignature, Object target, Object[] parameters) {
-        Logger.i(TAG, "enter " + className + " " + methodName + " " + methodSignature + " " + target);
+        Logger.i(TAG, "enter " + className + " " + methodName + " " + methodSignature);
+        // We can *not* append a target to the string because if the target class has override toString, it will cause a stack-over-flow.
         ConcurrentHashMap<String, Library> libraries = mLibraries.get(className);
         if (libraries == null) {
             return Library.NO_RETURN_VALUE;
