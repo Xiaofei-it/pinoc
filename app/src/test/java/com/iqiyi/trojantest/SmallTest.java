@@ -1,5 +1,7 @@
 package com.iqiyi.trojantest;
 
+import org.junit.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -73,5 +75,54 @@ public class SmallTest {
         process("(ZBCS[Ljava/lang/Integer;[[[Ljava/lang/B;IJF[[[D)La/b/c;");
         process("(ZBCSLjava/lang/Integer;[[[Ljava/lang/B;IJF[[[D)[La/b/c;");
         process("(ZBCSLjava/lang/Integer;[[[Ljava/lang/B;IJF[[[D)[[La/b/c;");
+    }
+
+    private static final HashMap<String, Character> PRIMITIVE_SIGNATURES_SHORT_FORMS = new HashMap<String, Character>() {
+        {
+            put("boolean", 'Z');
+            put("byte", 'B');
+            put("char", 'C');
+            put("short", 'S');
+            put("int", 'I');
+            put("long", 'J');
+            put("float", 'F');
+            put("double", 'D');
+            put("void", 'V');
+        }
+    };
+
+    private static String convertIfArray(String parameterType) {
+        int pos = parameterType.length() - 1;
+        int dimens = 0;
+        while (parameterType.charAt(pos) == ']') {
+            ++dimens;
+            pos -= 2;
+        }
+        if (dimens == 0) {
+            return parameterType;
+        }
+        String objectType = parameterType.substring(0, pos + 1);
+        if (PRIMITIVE_SIGNATURES_SHORT_FORMS.containsKey(objectType)) {
+            String result = "";
+            for (int i = 1; i <= dimens; ++i) {
+                result += "[";
+            }
+            result = result + PRIMITIVE_SIGNATURES_SHORT_FORMS.get(objectType);
+            return result;
+        }
+        String result = "";
+        for (int i = 1; i <= dimens; ++i) {
+            result += "[";
+        }
+        result = result + "L" + objectType + ";";
+        return result;
+    }
+    @org.junit.Test
+    public void test4() {
+        System.out.println(convertIfArray("java/lang/Object"));
+        System.out.println(convertIfArray("java/lang/Object[][][]"));
+        System.out.println(convertIfArray("boolean"));
+        System.out.println(convertIfArray("boolean[][]"));
+        System.out.println(convertIfArray("boolean[]"));
     }
 }

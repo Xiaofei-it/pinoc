@@ -197,9 +197,9 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
     @Override
     protected void onMethodEnter() {
         System.out.println("onMethodEnter");
-        mv.visitLdcInsn("className");
-        mv.visitLdcInsn("methodName");
-        mv.visitLdcInsn("methodSignature");
+        mv.visitLdcInsn(className);
+        mv.visitLdcInsn(methodName);
+        mv.visitLdcInsn(methodSignature);
         if (isStatic) {
             mv.visitInsn(Opcodes.ACONST_NULL);
         } else {
@@ -289,6 +289,33 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
         }
     }
 
+    private static String convertIfArray(String parameterType) {
+        int pos = parameterType.length() - 1;
+        int dimens = 0;
+        while (parameterType.charAt(pos) == ']') {
+            ++dimens;
+            pos -= 2;
+        }
+        if (dimens == 0) {
+            return parameterType;
+        }
+        String objectType = parameterType.substring(0, pos + 1);
+        if (PRIMITIVE_SIGNATURES_SHORT_FORMS.containsKey(objectType)) {
+            String result = "";
+            for (int i = 1; i <= dimens; ++i) {
+                result += "[";
+            }
+            result = result + PRIMITIVE_SIGNATURES_SHORT_FORMS.get(objectType);
+            return result;
+        }
+        String result = "";
+        for (int i = 1; i <= dimens; ++i) {
+            result += "[";
+        }
+        result = result + "L" + objectType + ";";
+        return result;
+    }
+
     private void generateFrameStatic() {
         int parameterNumber = parameterTypes.size();
         Object[] objects = new Object[parameterNumber + 1];
@@ -298,7 +325,7 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
             if (frame != null) {
                 objects[i] = frame;
             } else {
-                objects[i] = parameterType;
+                objects[i] = convertIfArray(parameterType);
             }
         }
         objects[parameterNumber] = "java/lang/Object";
@@ -315,7 +342,8 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
             if (frame != null) {
                 objects[i] = frame;
             } else {
-                objects[i] = parameterType;
+
+                objects[i] = convertIfArray(parameterType);
             }
         }
         objects[parameterNumber + 1] = "java/lang/Object";

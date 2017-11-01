@@ -39,13 +39,19 @@ public class TrojanPluginClassVisitor extends ClassVisitor {
                 || check(access, Opcodes.ACC_NATIVE)
                 || check(access, Opcodes.ACC_SYNTHETIC)
                 || check(access, Opcodes.ACC_STRICT)) {
+            System.out.println("Case 0");
             return mv;
         }
-        if (check(access, Opcodes.ACC_PUBLIC)) {
+        // generic type
+        if (signature != null) {
+            System.out.println("Case 1");
+            return mv;
+        }
+
             return new TrojanPluginMethodVisitor(api, mv, access, className, name, desc);
-        } else {
-            return mv;
-        }
+//        } else {
+//            return mv;
+//        }
 //        return new TestMethodVisitor(api, mv);
     }
 }
