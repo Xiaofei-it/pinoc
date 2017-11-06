@@ -122,7 +122,7 @@ public class TrojanPlugin extends Transform implements org.gradle.api.Plugin<Pro
                         def dest = outputProvider.getContentLocation(jarName + md5Name,
                                 jarInput.contentTypes, jarInput.scopes, Format.JAR)
                         JarProcessor.process(jarInput.file, dest)
-                        FileUtils.copyFile(jarInput.file, dest)
+//                        FileUtils.copyFile(jarInput.file, dest)
                         println 'Finish copy ' + jarInput.name
                 }
                 println '2'
