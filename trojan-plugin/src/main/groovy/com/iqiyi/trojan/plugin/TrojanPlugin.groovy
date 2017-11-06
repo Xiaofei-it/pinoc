@@ -88,8 +88,8 @@ public class TrojanPlugin extends Transform implements org.gradle.api.Plugin<Pro
                                         ClassVisitor cv = new TrojanPluginClassVisitor(className, classWriter)
                                         classReader.accept(cv, EXPAND_FRAMES)
                                         byte[] code = classWriter.toByteArray()
-                                        FileOutputStream fos = new FileOutputStream(
-                                                file.parentFile.absolutePath + File.separator + name)
+                                        FileOutputStream fos = new FileOutputStream(file)
+//                                                file.parentFile.absolutePath + File.separator + name)
                                         fos.write(code)
                                         fos.close()
                                     }
