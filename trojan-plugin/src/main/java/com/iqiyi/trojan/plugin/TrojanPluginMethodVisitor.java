@@ -103,7 +103,7 @@ class TrojanPluginMethodVisitor extends AdviceAdapter {
     private static final HashMap<String, String> PRIMITIVE_VALUE_OF_SIGNATURES = new HashMap<String, String>() {
         {
             put("boolean", "(Z)Ljava/lang/Boolean;");
-            put("byte", "(B)Ljava/lang/byte;");
+            put("byte", "(B)Ljava/lang/Byte;");
             put("char", "(C)Ljava/lang/Character;");
             put("short", "(S)Ljava/lang/Short;");
             put("int", "(I)Ljava/lang/Integer;");
