@@ -33,6 +33,9 @@ class JarProcessor {
             if (name.startsWith("android/")) {
                 return null;
             }
+            if (!name.startsWith("com/iqiyi/ishow/") && !name.startsWith("com/iqiyi/qixiu/")) {
+                return null;
+            }
             int pos = name.indexOf(".class");
             int i;
             boolean found = false;
@@ -71,7 +74,7 @@ class JarProcessor {
                 jos.putNextEntry(new JarEntry(entry));
             } else {
                 String className;
-//                if ((className = getClassName(entry.getName())) != null) {
+                if ((className = getClassName(entry.getName())) != null) {
 //                JarEntry tmp = new JarEntry(entry.getName());
 //                tmp.setComment(entry.getComment());
 //                tmp.setExtra(entry.getExtra());
@@ -79,21 +82,40 @@ class JarProcessor {
 //                tmp.setTime(entry.getTime());
 //                jos.putNextEntry(tmp);
 //                tmp.set
-
-
-
-
-                JarEntry tmp = new JarEntry(entry.getName());
-                tmp.setComment(entry.getComment());
-                tmp.setExtra(entry.getExtra());
-                tmp.setMethod(entry.getMethod());
-                tmp.setTime(entry.getTime());
-                if (tmp.getMethod() == ZipEntry.STORED) {
-                    tmp.setSize(entry.getSize());
-                    tmp.setCompressedSize(entry.getCompressedSize());
-                    tmp.setCrc(entry.getCrc());
-                }
-                jos.putNextEntry(tmp);
+                    JarEntry tmp = new JarEntry(entry.getName());
+                    tmp.setComment(entry.getComment());
+                    tmp.setExtra(entry.getExtra());
+                    tmp.setMethod(ZipEntry.DEFLATED);
+                    tmp.setTime(entry.getTime());
+                    jos.putNextEntry(tmp);
+                    InputStream is = jarFile.getInputStream(entry);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    byte[] bytes = new byte[1024];
+                    int num;
+                    int offset = 0;
+                    while ((num = is.read(bytes, offset, 1024)) != -1) {
+                        baos.write(bytes, 0, num);
+                    }
+                    is.close();
+                    ClassReader classReader = new ClassReader(baos.toByteArray());
+                    ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS);
+                    System.out.println(className);
+                    ClassVisitor cv = new TrojanPluginClassVisitor(className, classWriter);
+                    classReader.accept(cv, EXPAND_FRAMES);
+                    byte[] code = classWriter.toByteArray();
+                    jos.write(code, 0, code.length);
+                } else {
+                    JarEntry tmp = new JarEntry(entry.getName());
+                    tmp.setComment(entry.getComment());
+                    tmp.setExtra(entry.getExtra());
+                    tmp.setMethod(entry.getMethod());
+                    tmp.setTime(entry.getTime());
+                    if (tmp.getMethod() == ZipEntry.STORED) {
+                        tmp.setSize(entry.getSize());
+                        tmp.setCompressedSize(entry.getCompressedSize());
+                        tmp.setCrc(entry.getCrc());
+                    }
+                    jos.putNextEntry(tmp);
                     InputStream is = jarFile.getInputStream(entry);
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     byte[] bytes = new byte[1024];
@@ -114,6 +136,7 @@ class JarProcessor {
 //                    jos.write(code, 0, code.length);
 //                } else {
                     jos.write(baos.toByteArray());
+                }
 //                }
             }
         }
