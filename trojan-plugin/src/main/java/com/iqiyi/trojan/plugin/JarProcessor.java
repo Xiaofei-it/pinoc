@@ -12,6 +12,8 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
+import java.util.zip.Deflater;
+import java.util.zip.ZipEntry;
 
 import static org.objectweb.asm.ClassReader.EXPAND_FRAMES;
 
@@ -23,6 +25,12 @@ class JarProcessor {
     private static String getClassName(String name) {
         if (name.endsWith(".class")) {
             if (name.startsWith("com/iqiyi/trojan/")) {
+                return null;
+            }
+            if (name.startsWith("org/")) {
+                return null;
+            }
+            if (name.startsWith("android/")) {
                 return null;
             }
             int pos = name.indexOf(".class");
@@ -55,38 +63,58 @@ class JarProcessor {
             parent.mkdirs();
         }
         JarOutputStream jos = new JarOutputStream(new FileOutputStream(target));
+//        jos.setMethod(JarOutputStream.DEFLATED);
+//        jos.setLevel(Deflater.NO_COMPRESSION);
         while (entries.hasMoreElements()) {
             JarEntry entry = entries.nextElement();
             if (entry.isDirectory()) {
                 jos.putNextEntry(new JarEntry(entry));
             } else {
+                String className;
+//                if ((className = getClassName(entry.getName())) != null) {
+//                JarEntry tmp = new JarEntry(entry.getName());
+//                tmp.setComment(entry.getComment());
+//                tmp.setExtra(entry.getExtra());
+//                tmp.setMethod(ZipEntry.DEFLATED);
+//                tmp.setTime(entry.getTime());
+//                jos.putNextEntry(tmp);
+//                tmp.set
+
+
+
+
                 JarEntry tmp = new JarEntry(entry.getName());
                 tmp.setComment(entry.getComment());
                 tmp.setExtra(entry.getExtra());
                 tmp.setMethod(entry.getMethod());
                 tmp.setTime(entry.getTime());
+                if (tmp.getMethod() == ZipEntry.STORED) {
+                    tmp.setSize(entry.getSize());
+                    tmp.setCompressedSize(entry.getCompressedSize());
+                    tmp.setCrc(entry.getCrc());
+                }
                 jos.putNextEntry(tmp);
-                InputStream is = jarFile.getInputStream(entry);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                byte[] bytes = new byte[1024];
-                int num;
-                int offset = 0;
-                while ((num = is.read(bytes, offset, 1024)) != -1) {
-                    baos.write(bytes, 0, num);
-                }
-                is.close();
-                String className;
-                if ((className = getClassName(entry.getName())) != null) {
-                    ClassReader classReader = new ClassReader(baos.toByteArray());
-                    ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS);
-                    System.out.println(className);
-                    ClassVisitor cv = new TrojanPluginClassVisitor(className, classWriter);
-                    classReader.accept(cv, EXPAND_FRAMES);
-                    byte[] code = classWriter.toByteArray();
-                    jos.write(code, 0, code.length);
-                } else {
+                    InputStream is = jarFile.getInputStream(entry);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    byte[] bytes = new byte[1024];
+                    int num;
+                    int offset = 0;
+                    while ((num = is.read(bytes, offset, 1024)) != -1) {
+                        baos.write(bytes, 0, num);
+                    }
+                    is.close();
+//                String className;
+//                if ((className = getClassName(entry.getName())) != null) {
+//                    ClassReader classReader = new ClassReader(baos.toByteArray());
+//                    ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS);
+//                    System.out.println(className);
+//                    ClassVisitor cv = new TrojanPluginClassVisitor(className, classWriter);
+//                    classReader.accept(cv, EXPAND_FRAMES);
+//                    byte[] code = classWriter.toByteArray();
+//                    jos.write(code, 0, code.length);
+//                } else {
                     jos.write(baos.toByteArray());
-                }
+//                }
             }
         }
         System.out.println(s1 + " " + s2);

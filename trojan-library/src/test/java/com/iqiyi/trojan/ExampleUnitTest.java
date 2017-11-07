@@ -10,6 +10,7 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
+import java.util.zip.ZipEntry;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -77,8 +78,8 @@ public class ExampleUnitTest {
 
     @Test
     public void test2() throws Exception {
-        JarFile jarFile = new JarFile(new File("jar-test/e.jar"), false);
-        File target = new File("jar-test/e2.jar");
+        JarFile jarFile = new JarFile(new File("jar-test/MiPush_SDK_Client.jar"), false);
+        File target = new File("jar-test/MiPush_SDK_Client2.jar");
         Enumeration<JarEntry> entries = jarFile.entries();
         long s1 = 0L, s2 = 0L;
         System.out.println(jarFile.getManifest() + " " + File.separator + " " + File.pathSeparator);
@@ -102,7 +103,7 @@ public class ExampleUnitTest {
 
                             "\t" + entry.getSize()
                             + "\t" + entry.getCompressedSize()
-                            + "\t" + entry.getCrc()+entry.getName());
+                            + "\t" + entry.getCrc()+ "\t" + entry.getMethod() + "\t" + entry.getName());
             if (entry.isDirectory()) {
                 jos.putNextEntry(new JarEntry(entry));
             } else {
@@ -113,6 +114,12 @@ public class ExampleUnitTest {
                 tmp.setExtra(entry.getExtra());
                 tmp.setMethod(entry.getMethod());
                 tmp.setTime(entry.getTime());
+                if (tmp.getMethod() == ZipEntry.STORED) {
+                    tmp.setSize(entry.getSize());
+                    tmp.setCompressedSize(entry.getCompressedSize());
+                    tmp.setCrc(entry.getCrc());
+                }
+//                JarEntry tmp = new JarEntry(entry);
                 jos.putNextEntry(tmp);
                 InputStream is = jarFile.getInputStream(entry);
                 byte[] bytes = new byte[1024 * 100];
