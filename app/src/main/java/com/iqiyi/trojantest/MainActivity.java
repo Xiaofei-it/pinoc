@@ -7,16 +7,35 @@ import android.util.Log;
 import com.iqiyi.trojan.Trojan;
 
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import xiaofei.library.zlang.Library;
 
 public class MainActivity extends AppCompatActivity {
 
 
     private int iii = 90;
+    private void init() {
+        InputStream is = getResources().openRawResource(R.raw.config);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        byte[] bytes = new byte[1024];
+        int num;
+        try {
+            while ((num = is.read(bytes, 0, 1024)) != -1) {
+                baos.write(bytes, 0, num);
+            }
+            Trojan.config(baos.toString().replace("\r", ""));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        init();
         g1("a", "j", true, 8, 8, 8.0f, this, false);
         g2("a", "j", true, 8, 8, 8.0, 8.0f, 8L, 'c', this, false);
         new Test().g1("7u", iii);
@@ -26,6 +45,16 @@ public class MainActivity extends AppCompatActivity {
         } catch (Throwable t) {
 
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private void g1(String a, String b, boolean c, Integer d, int e, double f, MainActivity j, Boolean k) {
