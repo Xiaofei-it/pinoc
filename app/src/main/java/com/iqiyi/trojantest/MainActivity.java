@@ -11,6 +11,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import xiaofei.library.zlang.JavaFunction;
+import xiaofei.library.zlang.JavaLibrary;
 import xiaofei.library.zlang.Library;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,6 +20,28 @@ public class MainActivity extends AppCompatActivity {
 
     private int iii = 90;
     private void init() {
+        Trojan.addJavaDependency(new JavaLibrary.Builder().addFunction(new JavaFunction() {
+            @Override
+            public boolean isVarArgs() {
+                return false;
+            }
+
+            @Override
+            public int getParameterNumber() {
+                return 1;
+            }
+
+            @Override
+            public String getFunctionName() {
+                return "test_java";
+            }
+
+            @Override
+            public Object call(Object[] input) {
+                return "test_java_result" + input;
+            }
+        }).build());
+        Trojan.addDependency(new Library.Builder().addFunctions("function test_internal(a) {return a + 1;}").build());
         InputStream is = getResources().openRawResource(R.raw.config);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] bytes = new byte[1024];

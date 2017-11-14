@@ -6,8 +6,10 @@ import org.json.JSONObject;
 
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import xiaofei.library.zlang.CompileException;
+import xiaofei.library.zlang.JavaLibrary;
 import xiaofei.library.zlang.Library;
 import xiaofei.library.zlang.ZlangRuntimeException;
 
@@ -23,8 +25,14 @@ class TrojanCore {
 
     private ConcurrentHashMap<String, ConcurrentHashMap<String, Library>> mLibraries;
 
+    private ConcurrentLinkedQueue<Library> mDependencies;
+
+    private ConcurrentLinkedQueue<JavaLibrary> mJavaDependencies;
+
     private TrojanCore() {
         mLibraries = new ConcurrentHashMap<>();
+        mDependencies = new ConcurrentLinkedQueue<>();
+        mJavaDependencies = new ConcurrentLinkedQueue<>();
     }
 
     static TrojanCore getInstance() {
@@ -36,6 +44,14 @@ class TrojanCore {
             }
         }
         return sInstance;
+    }
+
+    void addDependency(Library library) {
+        mDependencies.add(library);
+    }
+
+    void addJavaDependency(JavaLibrary library) {
+        mJavaDependencies.add(library);
     }
 
     private static String getMethodId(String methodName, String methodSignature) {
@@ -52,7 +68,7 @@ class TrojanCore {
      * @return true if replaced.
      */
     Object onEnterMethod(String className, String methodName, String methodSignature, Object target, Object[] parameters) {
-        Logger.i(TAG, "enter " + className + " " + methodName + " " + methodSignature);
+        //Logger.i(TAG, "enter " + className + " " + methodName + " " + methodSignature);
         // We can *not* append a target to the string because if the target class has override toString, it will cause a stack-over-flow.
         ConcurrentHashMap<String, Library> libraries = mLibraries.get(className);
         if (libraries == null) {
@@ -112,8 +128,14 @@ class TrojanCore {
                 continue;
             }
             try {
-                Library lib = new Library.Builder().addFunctions(library).build(); //depende
-                zlangLibraries[i] = lib;
+                Library.Builder builder = new Library.Builder();
+                for (Library lib : mDependencies) {
+                    builder.addDependency(lib);
+                }
+                for (JavaLibrary lib : mJavaDependencies) {
+                    builder.addJavaDependency(lib);
+                }
+                zlangLibraries[i] = builder.addFunctions(library).build();
             } catch (CompileException e) {
                 Logger.e(TAG, "Compile exception occurs in " + library, e);
                 zlangLibraries[i] = null;

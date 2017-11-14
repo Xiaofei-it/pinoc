@@ -10,6 +10,7 @@ libraries:[
    for i = 0 to len - 1 step 1 \{\
       _println(\"library 0 p:\" + parameters[i]);\
    \}\
+   _println(\"library 0 test_internal:\" + test_internal(\"Hehe\"));\
 \}",
 "function main(className, methodName, methodSignature, target, parameters) \{\
    _println(\"library 1: \" + className + \" \" + methodName + \" \" + methodSignature + \" \" + target);\
@@ -17,5 +18,6 @@ libraries:[
    for i = 0 to len - 1 step 1 \{\
       _println(\"library 1 p:\" + parameters[i]);\
    \}\
+   _println(\"library 1 test_java:\" + test_java(\"Hehe\"));\
 \}"
 ]}
