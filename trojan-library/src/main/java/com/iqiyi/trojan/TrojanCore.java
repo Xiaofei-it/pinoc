@@ -84,6 +84,9 @@ class TrojanCore {
         } catch (ZlangRuntimeException e) {
             Logger.e(TAG, "Execution error.", e);
             return Library.NO_RETURN_VALUE;
+        } catch (Throwable t) {
+            Logger.e(TAG, "Unknown error.", t);
+            return Library.NO_RETURN_VALUE;
         }
     }
 
