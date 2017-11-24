@@ -1,0 +1,137 @@
+/*
+ * Copyright 2013 Chris Banes
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * How to use
+ * usage: [apply from: project.file('gradle-mvn-push.gradle')]
+ */
+
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+
+def getVersionName() {
+  return hasProperty("VERSION_NAME") ? VERSION_NAME : ""
+}
+
+def isReleaseBuild() {
+  return getVersionName().contains("SNAPSHOT") == false
+}
+
+def getGroup() {
+  return hasProperty("GROUP") ? GROUP : ""
+}
+
+def getArtifactId() {
+  return hasProperty("POM_ARTIFACT_ID") ? POM_ARTIFACT_ID : ""
+}
+
+
+def getMavenUrl() {
+  return hasProperty("MAVEN_URL") ? MAVEN_URL : ""
+}
+
+def getUserName() {
+  return hasProperty("USERNAME") ? USERNAME : ""
+}
+
+def getPassword() {
+  return hasProperty("PASSWORD") ? PASSWORD : ""
+}
+
+def getPomName() {
+  return hasProperty("POM_NAME") ? POM_NAME : ""
+}
+
+def getPomPackaging() {
+  return hasProperty("POM_PACKAGING") ? POM_PACKAGING : ""
+}
+
+afterEvaluate { project ->
+  uploadArchives {
+    repositories {
+      mavenDeployer {
+        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+        pom.groupId = getGroup()
+        pom.artifactId = getArtifactId()
+        pom.version = getVersionName()
+
+        repository(url: getMavenUrl()) {
+          authentication(userName: getUserName(), password: getPassword())
+        }
+
+        pom.project {
+          name getPomName()
+          packaging getPomPackaging()
+        }
+      }
+    }
+  }
+
+  signing {
+    required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+  }
+
+  if (project.getPlugins().hasPlugin('com.android.application') || project.getPlugins().
+      hasPlugin('com.android.library')) {
+
+    task androidJavadocs(type: Javadoc) {
+      source = android.sourceSets.main.java.srcDirs
+      classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    }
+
+    task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+      classifier = 'javadoc'
+      from androidJavadocs.destinationDir
+    }
+
+    task androidSourcesJar(type: Jar) {
+      classifier = 'sources'
+      from android.sourceSets.main.java.sourceFiles
+    }
+  } else {
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+      classifier = 'sources'
+      from sourceSets.main.allSource
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+      classifier = 'javadoc'
+      from javadoc.destinationDir
+    }
+  }
+
+  if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+      tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+      }
+    }
+  }
+
+
+  artifacts {
+    if (project.getPlugins().hasPlugin('com.android.application') || project.getPlugins().
+        hasPlugin('com.android.library')) {
+      archives androidSourcesJar
+      archives androidJavadocsJar
+    } else {
+      archives sourcesJar
+      archives javadocJar
+    }
+  }
+}
