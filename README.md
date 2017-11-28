@@ -14,8 +14,8 @@ The current version of the Trojan library supports:
 
 ### Code injection at compile time
 
-When building an Android app, the Trojan plugin modifies all of, or only the
-specified, Java methods by injecting a particular code snippet at the entrance
+When building an Android app, the Trojan plugin modifies all of the
+Java methods by injecting a particular code snippet at the entrance
 of each method to be modified.
 
 Take the following as an example:
@@ -59,22 +59,48 @@ public class Test {
 }
 ```
 
+The injected code snippet invokes a static method called `onEneterMethod` of the `Trojan` class.
+`onEnterMethod` takes as parameters the name of the class, the name and signature of the method being invoked,
+the object on which the method is being invoked, and the parameters of the method being invoked.
+
+Inside `onEnterMethod`, Trojan decides whether to execute some instructions and what to return after
+the execution, according to a configuration, which specifies:
+
+1. at the entrances of which methods, what instructions should be injected;
+
+2. which methods should be replaced, and their replacements;
+
 ### Modification at runtime
 
-At runtime, if the method should be modified, you should make Trojan read a configuration
-which specifies the modification.
-Then when the method is being invoked, `Trojan.onEnterMethod()` will execute the
-corresponding instructions according to the configuration.
+At runtime, when Trojan is initialized, it reads a configuration which specified the modification of the app.
 
-If the method should not be modified, `Trojan.onEnterMethod()` will simply return `Library.NO_RETURN_VALUE`
-and the instructions within the original method will be executed.
+As mentioned above, when a method is being invoked, `Trojan.onEnterMethod` receives the corresponding
+parameters. Then Trojan does the following:
+
+1. If the specified instructions should be injected at the entrance of the method,
+Trojan executes the injected instructions and returns `Library.NO_RETURN_VALUE`.
+Then the remaining instructions within the original method are executed.
+
+2. If the method should be replaced, Trojan executes the instructions of its replacement and returns
+the return value of the replacement to the original method. Then the original method returns it directly
+and the remaining instructions are not executed. 
+
+3. If the method should neither be modified nor replaced, `Trojan.onEnterMethod()` will simply
+return `Library.NO_RETURN_VALUE`. Then the instructions of original method are executed.
 
 ### Instructions written in Zlang
 
-The general techniques always use a Java classloader to load a class and execute the corresponding
-instructions with the class. However, the classloader causes the security problems and thus is not
+The traditional techniques always adopt a Java classloader to load a class and execute the corresponding
+instructions within the class. However, the classloader causes the security problems and thus is not
 allowed by some app stores.
 
+To avoid the above problems, Trojan does not adopt the tradition classloader-based techniques, but
+adopt a novel technique which is classloader-free. Specifically, the Trojan library is based on
+the Zlang programming language, a flexible dynamically-typed programming language which runs on
+the JVM, and supports access to Java objects and interaction with Java at runtime.
+
+When a user writes the instructions to
+be executed
 // TODO
 ## Usage
 
