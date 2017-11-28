@@ -14,8 +14,6 @@ An identifier starts with a letter or an underscore, followed by a sequence of l
 However, it cannot start with a digit.
 
 Thus, `_fun`, `fun` and `fun1` are legal identifiers, but `1fun` is not.
-Zlang is a flexible dynamically-typed programming language which runs on the JVM, and supports access
-to Java objects and interaction with Java at runtime.
 
 ## Numbers
 
@@ -134,7 +132,7 @@ Zlang provides three logical operators for boolean expressions:
 | Operator | Purpose |
 | :------: | :------:|
 |  `&&`      | Logical conjunction|
-|  `||`      | Logical disjunction|
+|  &#124;&#124;      | Logical disjunction|
 |  `!`       | Logical negation|
 
 #### Short-circuiting
@@ -154,7 +152,7 @@ In the above example, `_equal(string, "abc")` can be regarded as `string.equals(
 Thus if `string` is `null`, an `NullPointerException` will be thrown when it is evaluated.
 Thanks to the short-circuiting, however, it will not be evaluated at runtime.
 
-Moreover, the logical disjunctin operator (`||`) also supports short-circuiting:
+Moreover, the logical disjunction operator (`||`) also supports short-circuiting:
 If the left operand is true, then the right operand will not be evaluated and the result will be true.
 
 ### Subscript operator
@@ -184,4 +182,4 @@ The table below lists all Zlang operators in order of precedence:
 |  3       | `+` `-` | Addition/unary plus, subtraction/unary minus|
 |  4       | `==`  `!=` `<` `<=` `>` `>=` |  Relational operators|
 |  5       | `&&` |  Logical conjunction|
-|  6       | `||` |  Logical disjunction|
+|  6       | &#124;&#124; |  Logical disjunction|

@@ -62,7 +62,7 @@ because a statement, which tries to assign a value to `c`, appears outside a fun
 
 The type of a variable is dynamical, depending on the value you assign to it.
 
-If a particular variable is assigned values of different types,
+If a particular variable is assigned the values of different types,
 the type of the variable changes according to the type of the value it is assigned.
 
 See the following example;

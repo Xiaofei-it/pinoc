@@ -15,22 +15,22 @@ call any other functions. Under some circumstances, the Java function can call o
 which, however, is not recommended.
 
 A *Java library* is a library consisting of Java functions.
-A Java library is used to build a Zlang library (which will be defined below),
+A Java library is used to build a Zlang library (which will be defined below) at Java runtime,
 and it provides the Zlang functions of the Zlang library,
 with the Java functions of the Java library to call.
 
-To build a Java library, create an instance of the `JavaLibrary.Builder` class,
+To build a Java library at Java runtime, create an instance of the `JavaLibrary.Builder` class,
 use the corresponding methods provided by the `JavaLibrary.Builder` class to add the Java functions,
 and finally invoke the `build()` method to obtain an instance of a Java library.
 
 A *Zlang library* is a library consisting of Zlang functions, other Zlang libraries and/or Java libraries.
-To build a Java library, create an instance of the `Library.Builder` class,
+To build a Zlang library at Java runtime, create an instance of the `Library.Builder` class,
 use the corresponding methods provided by the `Library.Builder` class to add the Zlang functions
 and other Zlang/Java libraries,
 and finally invoke the `build()` method to obtain an instance of a Zlang library.
 
 In a Zlang library *Z*, a Zlang function can call any Zlang function of *Z*, any Java function of any Java
-library of *Z*, any Zlang/Java function of any Zlang library of *Z*.
+library of *Z*, and any Zlang/Java function of any Zlang library of *Z*.
 
 ## Structure of a Zlang function
 
@@ -208,7 +208,7 @@ Any Java functions whose name starts with the underscore is regarded as the inte
 provided by Zlang. See `xiaofei.library.zlang.InternalJavaFunction` for the internal Java functions
 provided by Zlang.
 
-## Build a Java library on the JVM
+## Build a Java library at Java runtime
 
 To build a Java library which contains the above `log1` and `log2` functions:
 
@@ -219,7 +219,7 @@ JavaLibrary javaLibrary = new JavaLibrary.Builder()
                              .build();
 ```
 
-## Build a Zlang library on the JVM
+## Build a Zlang library at Java runtime
 
 To build a Zlang library which contains the above `test1` and `test2` functions:
 
@@ -242,9 +242,9 @@ Library library = new Library.Builder()
                     .build();
 ```
 
-## Call a Zlang function on the JVM
+## Call a Zlang function at Java runtime
 
-To call a Zlang function on the JVM:
+To call a Zlang function:
 
 ```
 library.execute("test1", new Object[]{3});
@@ -253,5 +253,3 @@ library.execute("test2", new Object[]{3});
 
 Note that if `execute` calls a Zlang function which has a return value, `execute` will also return
 this return value as its own return value.
-
-// TODO

@@ -1,7 +1,7 @@
 # Zlang
 
-Zlang is a flexible dynamically-typed programming language which runs on the JVM, and supports access
-to Java objects and interaction with Java at runtime.
+Zlang is a flexible dynamically-typed programming language running on the JVM and
+supporting access to Java objects and interaction with Java at runtime..
 
 ## Features
 
@@ -123,6 +123,10 @@ function dynamical_fun(this) {
 
 ## Using Zlang at Java runtime
 
+Zlang runs on the JVM.
+You should write Java code to build a Zlang library and also write Java code to call a Zlang function
+to execute the instructions of the function.
+
 ### Downloading
 
 Before using Zlang at Java runtime, you should compile the binaries or the source code
@@ -132,7 +136,7 @@ of the Zlang interpreter into your project.
 
 ### Building a Zlang library
 
-Build a Zlang library, which contains Zlang functions to call.
+At Java runtime, before calling any Zlang function, you should build a Zlang library, which contains Zlang functions to call.
 
 ```
 Library library = new Library.Builder()
@@ -161,9 +165,12 @@ is replaced with a `JavaLibrary.Builder`.
 
 ## Learning more
 
-## License
+Learn the source code of Zlang from [HERE](https://github.com/Xiaofei-it/Zlang).
 
-Copyright (C) 2011-2017 Xiaofei
+Learn the syntax of Zlang from [HERE](docs/syntax.md).
 
-The binaries and source code of the Zlang Project can be used according to the
-[Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
+Learn the statements of Zlang from [HERE](docs/statements.md).
+
+Learn the funtions and libraries of Zlang from [HERE](docs/functions_libraries.md).
+
+Learn the intenal Java function provided by Zlang from [HERE](docs/internal_java_functions.md).
