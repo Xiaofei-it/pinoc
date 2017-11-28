@@ -95,18 +95,21 @@ instructions within the class. However, the classloader causes the security prob
 allowed by some app stores.
 
 To avoid the above problems, Trojan does not adopt the tradition classloader-based techniques, but
-adopt a novel technique which is classloader-free. Specifically, the Trojan library is based on
-the Zlang programming language, a flexible dynamically-typed programming language which runs on
-the JVM, and supports access to Java objects and interaction with Java at runtime.
+adopt a novel technique which is classloader-free. Specifically, Trojan executes the instructions
+written not in Java, but in the Zlang programming language,
+a flexible dynamically-typed programming language which runs on the JVM
+and supports access to Java objects and interaction with Java at runtime.
+It is easy to convert Java instructions into Zlang instructions.
 
-When a user writes the instructions to
-be executed
-// TODO
-## Usage
+## Deployment
+
+To use the Trojan library, add the following dependency:
 
 ```
 compile 'com.iqiyi.ishow.support:trojan:0.0.67'
 ```
+
+Also, the Trojan plugin is needed at compile time:
 
 ```
 buildscript {
@@ -121,3 +124,14 @@ buildscript {
     }
 }
 ```
+
+To learn Zlang, please refer to [Zlang](docs/zlang/zlang.md).
+
+To learn Trojan, please refer to [Trojan](docs/trojan.md).
+
+## License
+
+Copyright (C) 2017 iQIYI.com
+
+The binaries and source code of the Trojan library and the Trojan plugin can be used according to the
+[Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
