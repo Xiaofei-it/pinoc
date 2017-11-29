@@ -1,6 +1,6 @@
 # Trojan
 
-Trojan is a novel library for dynamical classloader-free modification of an Android app.
+Trojan is a novel library for dynamic classloader-free modification of an Android app.
 
 The current version of the Trojan library supports:
  
