@@ -107,6 +107,9 @@ and the remaining instructions are not executed.
 3. If the method should neither be modified nor replaced, `Trojan.onEnterMethod()` will simply
 return `Library.NO_RETURN_VALUE`. Then the instructions of original method are executed.
 
+Note that Trojan has a high performance in memory and CPU usage, so it will not
+affect the memory and CPU usage of your app.
+
 ### Instructions written in Zlang
 
 The traditional techniques always adopt a Java classloader to load a class and execute the corresponding
@@ -122,7 +125,47 @@ It is easy to convert Java instructions into Zlang instructions.
 
 ## Comparision with other techniques
 
-Trojan can support 
+Since Trojan can replace or modify Java methods, we can adopt it for hotfix or
+dynamic statistical sampling.
+
+### Hotfix
+
+Compared with the other techniques for hotfix, Trojan has the following advantages:
+
+1. Classloader-free. The instructions within the hotfix are written in Zlang instead of Java.
+Thus the Java classloader is not needed. In contrast, the other techniques need to use a Java
+classloader to load the instructions written in Java.
+
+2. High compatibility. The Trojan library has higher compatibility than the other techniques,
+because the Zlang compiler and executor run on the usual JVM,
+while the other techniques may perform some operations under the JVM, which may not work on some devices.
+
+### Dynamic statistical sampling 
+
+As an app developer, you often need to perform the statistical sampling for method invocation
+by adding sampling instructions at the entrance of the corresponding methods.
+For example, you may need to perform sampling for the `onClick` method of a particular
+`View`, or the `onCreate` method of a particular `Activity`. 
+However, these sampling instructions are static and thus there are two disadvantages:
+
+1. The methods to be sampled should be specified at compile time. After the app is released,
+you cannot perform the sampling for another method which is not specified at compile time.
+ 
+2. The sampling instructions should be specified at compile time. After the app is released,
+you cannot modify them.
+
+Therefore, the sampling should be dynamic rather than static. Thus developers need to perform
+dynamic statistical sampling.
+
+Nowadays, there are not so many techniques for dynamic statistical sampling. Current techniques
+can only perform sampling for some methods of `View`s or `Activity`s. Compared with them, Trojan
+has the following advantages:
+
+1. Any method of any class can be sampled. On contrast, current techniques can only sample
+some particular methods of some particular classes.
+
+2. The sampling instructions can be specified dynamically. On contrast, the instructions allowed by
+current techniques are limited.
 
 ## Deployment
 
