@@ -1,4 +1,4 @@
-# Trojan
+# Usage of Trojan
 
 This chapter covers the usage of the Trojan library.
 
