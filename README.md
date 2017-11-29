@@ -12,7 +12,7 @@ The current version of the Trojan library supports:
 
 ## Principle
 
-// TODO add a picture
+<img src="docs/fig.png" width="600" height="600"/>
 
 When an Android app is built, the Trojan plugin modifies all of the Java methods.
 After the modification, each method (the original method) becomes its variant.
