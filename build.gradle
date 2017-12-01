@@ -1,26 +1,42 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
+  ext.sdk_versions = [compileSdk: 27,
+                      minSdk    : 9]
+
+
+  ext.deps = [zlang        : 'xiaofei.library:zlang:0.1.0',
+              android_tools: 'com.android.tools.build:gradle:3.0.1',
+              asm          : 'org.ow2.asm:asm:5.0.3',
+              asm_common   : 'org.ow2.asm:asm-commons:5.0.3',
+              jfrog_plugin : 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3',
+              android_maven: 'com.github.dcendents:android-maven-gradle-plugin:2.0']
+
+  repositories {
+    google()
+    jcenter()
+  }
+  dependencies {
+    classpath deps.android_tools
+    classpath deps.jfrog_plugin
+    classpath deps.android_maven
+
+    // NOTE: Do not place your application dependencies here; they belong
+    // in the individual module build.gradle files
+  }
 }
 
 allprojects {
-    repositories {
-        jcenter()
-        maven {
-            url "http://maven.mbd.qiyi.domain/nexus/content/repositories/mbd-show/"
-        }
+  repositories {
+    google()
+    jcenter()
+    maven {
+      url "https://dl.bintray.com/iqiyi/trojan"
     }
+  }
 }
 
 task clean(type: Delete) {
-    delete rootProject.buildDir
+  delete rootProject.buildDir
 }

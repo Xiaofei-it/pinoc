@@ -1,9 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'trojan-plugin'
 
+
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "com.iqiyi.trojantest"
         minSdkVersion 9
@@ -22,29 +22,34 @@ android {
 
 buildscript {
     repositories {
+        google()
         jcenter()
         maven {
             //url uri('../repo')
             url "http://maven.mbd.qiyi.domain/nexus/content/repositories/mbd-show/"
         }
+        maven {
+            url "https://dl.bintray.com/iqiyi/trojan"
+        }
     }
     dependencies {
         //classpath 'com.iqiyi.trojan.plugin:trojan-plugin:0.0.57'
 //        classpath 'com.iqiyi.ishow.support:trojan-plugin:show'
-        classpath 'com.iqiyi.ishow.support:trojan-plugin:0.0.125'
+//        classpath 'com.iqiyi.ishow.support:trojan-plugin:0.0.125'
+        classpath 'com.iqiyi:trojan-plugin:0.1.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile project(':trojan-library')
+    implementation 'com.android.support:appcompat-v7:25.3.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+//    implementation project(':trojan-library')
 //    compile 'com.iqiyi.ishow.support:trojan:0.0.63'
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 }
