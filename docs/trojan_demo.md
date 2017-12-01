@@ -1,4 +1,4 @@
-# Usage of Trojan
+# Demo of Trojan
 
 This chapter covers the usage of the Trojan library.
 
@@ -16,10 +16,10 @@ The Json string is in the following format:
     {class: "...", method_name: "...", method_sig: "...", library: int}
 ],
 libraries:[
-"function main(className, methodName, methodSignature, this, parameters) \{\
+"function main(className, methodName, methodSignature, target, parameters) \{\
     ...
 \}",
-"function main(className, methodName, methodSignature, this, parameters) \{\
+"function main(className, methodName, methodSignature, target, parameters) \{\
     ...
 \}"
 ]}
@@ -31,7 +31,7 @@ the signature of the method and the index of a Zlang library containing the inst
 
 The array mapped by "libraries" is an array of strings,
 each of which is a Zlang library mentioned above. Specifically, the Zlang library contains several Zlang
-functions, one of which is `main(className, methodName, methodSignature, this, parameters)`,
+functions, one of which is `main(className, methodName, methodSignature, target, parameters)`,
 which is the entrance of the instuctions to execute. The parameters of the `main` function are:
 
 | Parameter | Meaning |
@@ -39,7 +39,7 @@ which is the entrance of the instuctions to execute. The parameters of the `main
 |  className | a string indicating the name of the class|
 |  methodName | a string indicating the name of the method|
 |  methodSignature| a string indicating the signature of the method|
-|  this      | an object on which the method is invoked. It is `null` if the method is static.|
+|  target      | an object on which the method is invoked. It is `null` if the method is static.|
 | parameters| an array of the parameters passed to the method being invoked|
 
 If the `main` function has a return value, then the original method is replaced and the reture value
@@ -61,16 +61,16 @@ The following is an example:
     {class: "com/iqiyi/trojantest/MainActivity", method_name: "g1", method_sig: "(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/Integer;IDLcom/iqiyi/trojantest/MainActivity;Ljava/lang/Boolean;)V", library: 0}
 ],
 libraries:[
-"function main(className, methodName, methodSignature, this, parameters) \{\
-   _println(\"library 0: \" + className + \" \" + methodName + \" \" + methodSignature + \" \" + this);\
+"function main(className, methodName, methodSignature, target, parameters) \{\
+   _println(\"library 0: \" + className + \" \" + methodName + \" \" + methodSignature + \" \" + target);\
    len = _length(parameters);\
    for i = 0 to len - 1 step 1 \{\
       _println(\"library 0 p:\" + parameters[i]);\
    \}\
    _println(\"library 0 test_internal:\" + test_internal(\"Hehe\"));\
 \}",
-"function main(className, methodName, methodSignature, this, parameters) \{\
-   _println(\"library 1: \" + className + \" \" + methodName + \" \" + methodSignature + \" \" + this);\
+"function main(className, methodName, methodSignature, target, parameters) \{\
+   _println(\"library 1: \" + className + \" \" + methodName + \" \" + methodSignature + \" \" + target);\
    len = _length(parameters);\
    for i = 0 to len - 1 step 1 \{\
       _println(\"library 1 p:\" + parameters[i]);\

@@ -1,23 +1,33 @@
 {targets:[
     {class: "com/iqiyi/trojantest/MainActivity", method_name: "onPause", method_sig: "()V", library: 1},
     {class: "com/iqiyi/trojantest/MainActivity", method_name: "onResume", method_sig: "()V", library: 0},
-    {class: "com/iqiyi/trojantest/MainActivity", method_name: "g1", method_sig: "(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/Integer;IDLcom/iqiyi/trojantest/MainActivity;Ljava/lang/Boolean;)V", library: 0}
+    {class: "com/iqiyi/trojantest/MainActivity", method_name: "g1", method_sig: "(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/Integer;IDLcom/iqiyi/trojantest/MainActivity;Ljava/lang/Boolean;)V", library: 0},
+    {class: "com/iqiyi/trojantest/DemoActivity", method_name: "init", method_sig: "()V", library: 2}
 ],
 libraries:[
-"function main(className, methodName, methodSignature, target, parameters) \{\
-   _println(\"library 0: \" + className + \" \" + methodName + \" \" + methodSignature + \" \" + target);\
+"function main(className, methodName, methodSignature, this, parameters) \{\
+   _println(\"library 0: \" + className + \" \" + methodName + \" \" + methodSignature + \" \" + this);\
    len = _length(parameters);\
    for i = 0 to len - 1 step 1 \{\
       _println(\"library 0 p:\" + parameters[i]);\
    \}\
    _println(\"library 0 test_internal:\" + test_internal(\"Hehe\"));\
 \}",
-"function main(className, methodName, methodSignature, target, parameters) \{\
-   _println(\"library 1: \" + className + \" \" + methodName + \" \" + methodSignature + \" \" + target);\
+"function main(className, methodName, methodSignature, this, parameters) \{\
+   _println(\"library 1: \" + className + \" \" + methodName + \" \" + methodSignature + \" \" + this);\
    len = _length(parameters);\
    for i = 0 to len - 1 step 1 \{\
       _println(\"library 1 p:\" + parameters[i]);\
    \}\
    _println(\"library 1 test_java:\" + test_java(\"Hehe\"));\
+\}",
+"function main(className, methodName, methodSignature, this, parameters) \{\
+   intent = _invoke_method(this, \"getIntent\");\
+   tmp = _invoke_public_method(intent, \"getStringExtra\", \"temp\");\
+   if (tmp != null) \{\
+      textView = _invoke_method(this, \"findViewById\", _get_static_field(\"com.iqiyi.trojantest.R$id\", \"tv\"));\
+      _invoke_public_method(textView, \"setText\", _invoke_public_method(tmp, \"toUpperCase\"));\
+   \}\
+   return null;\
 \}"
 ]}

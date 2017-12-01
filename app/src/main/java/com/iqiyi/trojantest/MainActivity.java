@@ -18,9 +18,11 @@
 
 package com.iqiyi.trojantest;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.iqiyi.trojan.Trojan;
 
@@ -87,6 +89,14 @@ public class MainActivity extends AppCompatActivity {
         } catch (Throwable t) {
 
         }
+        findViewById(R.id.demo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, DemoActivity.class);
+                intent.putExtra("temp", "Hello");
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

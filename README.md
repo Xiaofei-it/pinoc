@@ -76,6 +76,10 @@ some particular methods of some particular classes.
 2. The sampling instructions can be specified dynamically. On contrast, the instructions allowed by
 current techniques are limited.
 
+## Demo
+
+A demo is provided, which you may refer to. See [Demo](docs/trojan_demo.md) for the details.
+
 ## Deployment
 
 To use the Trojan library, add the following dependency:
