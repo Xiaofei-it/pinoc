@@ -17,7 +17,7 @@ The current version of the Trojan library supports:
 When an Android app is built, the Trojan plugin modifies all of the Java methods.
 After the modification, each method (the original method) becomes its variant.
 
-At runtime, when a method is invoked, it is the variant of the original one that is actually invoked.
+At runtime, when a method is invoked, it is the variant of the original one that is actually invoked.//TODO 该句可能误认为原方法还存在，其实是覆盖
 The variant passes the information about the invocation to Trojan,
 which decides whether to replace or modify the original method.
 
@@ -35,7 +35,7 @@ See [Principle of Trojan](docs/trojan_principle.md) for more information.
 ## Comparision with other techniques
 
 Since Trojan can replace or modify Java methods, we can adopt it for hotfix or
-dynamic statistical sampling.
+dynamic statistical sampling. //TODO 无埋点建议替换为更加通俗易懂的单词
 
 ### Hotfix
 
@@ -43,13 +43,13 @@ Compared with the other techniques for hotfix, Trojan has the following advantag
 
 1. Classloader-free. The instructions within the hotfix are written in Zlang instead of Java.
 Thus the Java classloader is not needed. In contrast, the other techniques need to use a Java
-classloader to load the instructions written in Java.
+classloader to load the instructions written in Java. //TODO 建议增加Classloader-free的作用
 
 2. High compatibility. The Trojan library has higher compatibility than the other techniques,
 because the Zlang compiler and executor run on the usual JVM,
 while the other techniques may perform some operations under the JVM, which may not work on some devices.
 
-### Dynamic statistical sampling 
+### Dynamic statistical sampling //TODO 建议sampling可换做更通俗的单词，或指明此处sampling和含义
 
 As an app developer, you often need to perform the statistical sampling for method invocation
 by adding sampling instructions at the entrance of the corresponding methods.
