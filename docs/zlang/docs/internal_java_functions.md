@@ -6,6 +6,195 @@ Otherwise, an error will occur at runtime.
 
 Some Zlang functions allows a variable number of parameters, which is represented by an ellipsis (...). 
 
+## Basic Java object functions
+
+### _equal(obj1, obj2)
+
+Indicates whether `obj1` is "equal to" `obj2`.
+
+`_equal(obj1, obj2)` in Zlang is equivalent to `obj1.equals(obj2)` in Java.
+
+**Parameters:**
+
+obj1 - the reference object to compare.
+
+obj2 - the reference object with which to compare.
+
+**Returns:**
+
+true if the two objects are the same; false otherwise.
+
+### _compare(obj1, obj2)
+
+Compares `obj1` with `obj2` for order.
+
+`_compare(obj1, obj2)` in Zlang is equivalent to `((Comparable)obj1).compareTo(obj2)` in Java.
+
+**Parameters:**
+
+obj1 - the reference object to compare.
+
+obj2 - the reference object with which to compare.
+
+**Returns:**
+
+A negative integer, zero, or a positive integer
+as `obj1` is less than, equal to, or greater than `obj2`.
+
+### _hashcode(obj)
+
+Returns a hash code value for `obj`.
+
+`_hashcode(obj)` in Zlang is equivalent to `obj.hashCode()` in Java.
+
+**Parameters:**
+
+obj - the object.
+
+**Returns:**
+
+A hash code value for this object.
+
+## Type functions
+
+### _get_class(obj)
+
+Returns the runtime class of `obj`.
+
+`_get_class(obj)` in Zlang is equivalent to `obj.getClass()` in Java.
+
+**Parameters:**
+
+obj - the object.
+
+**Returns:**
+
+The `Class` object that represents the runtime class of this object.
+
+### _get_class_name(obj)
+
+Returns the name of the runtime class of `obj`.
+
+`_get_class_name(obj)` in Zlang is equivalent to `obj.getClass().getName()` in Java.
+
+**Parameters:**
+
+obj - the object.
+
+**Returns:**
+
+The name of the `Class` object that represents the runtime class of this object.
+
+### _instance_of(obj, class)
+
+Determines if `obj` is assignment-compatible with the object represented by `class`.
+
+**Parameters:**
+
+obj - the object.
+
+class - the specified class, may be a `Class` object, or a string which specifies the name of the class.
+
+**Returns:**
+
+true if obj is an instance of the class.
+
+### _is_boolean(obj)
+
+Determines if `obj` is a `boolean` or a `Boolean`.
+
+**Parameters:**
+
+obj - the object.
+
+**Returns:**
+
+true if `obj` is a `boolean` or a `Boolean`.
+
+### _is_char(obj)
+
+Determines if `obj` is a `char` or a `Character`.
+
+**Parameters:**
+
+obj - the object.
+
+**Returns:**
+
+true if `obj` is a `char` or a `Character`.
+
+### _is_short(obj)
+
+Determines if `obj` is a `short` or a `Short`.
+
+**Parameters:**
+
+obj - the object.
+
+**Returns:**
+
+true if `obj` is a `short` or a `Short`.
+
+### _is_int(obj)
+
+Determines if `obj` is an `int` or an `Integer`.
+
+**Parameters:**
+
+obj - the object.
+
+**Returns:**
+
+true if `obj` is an `int` or an `Integer`.
+
+### _is_long(obj)
+
+Determines if `obj` is a `long` or a `Long`.
+
+**Parameters:**
+
+obj - the object.
+
+**Returns:**
+
+true if `obj` is a `long` or a `Long`.
+
+### _is_float(obj)
+
+Determines if `obj` is a `float` or a `Float`.
+
+**Parameters:**
+
+obj - the object.
+
+**Returns:**
+
+true if `obj` is a `float` or a `Float`.
+
+### _is_double(obj)
+
+Determines if `obj` is a `double` or a `Double`.
+
+**Parameters:**
+
+obj - the object.
+
+**Returns:**
+
+true if `obj` is a `double` or a `Double`.
+
+### _is_string(obj)
+
+Determines if `obj` is a `String`.
+
+**Parameters:**
+
+obj - the object.
+
+**Returns:**
+
+true if `obj` is a `String`.
+
 ## Array functions
 
 ### _length(arr)

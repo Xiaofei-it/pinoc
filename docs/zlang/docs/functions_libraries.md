@@ -4,19 +4,24 @@ This chapter covers the functions and libraries of the Zlang programming languag
 
 ## Definitions
 
-A *Zlang function* is a function written by Zlang.
-It can call Zlang functions (including itself) within itself and can also be called by Zlang functions (including itself).
+A *Zlang function* is a function written in Zlang, containing zero or more Zlang statements.
+A statement within a Zlang function can call Zlang functions (including the Zlang function itself),
+and a Zlang function can also be called by a statement within Zlang functions (including the Zlang function itself).
 
-A *Java function* is a function provided by a Java class implementing the `JavaFunction` interface,
-which can be called by Zlang functions.
+A *Java function* is a function provided by a Java class implementing the `JavaFunction` interface.
+It can can be called by a statement within Zlang functions.
 
-Note that a Zlang function can call a Zlang function or a Java function, but a Java function *cannot*
-call any other functions. Under some circumstances, the Java function can call other functions,
+Note that the Java function here is different from the usual Java method.
+Mentioned later will be how to write a Java function.
+
+Also note that a statement within a Zlang function can call a Zlang function or a Java function,
+but a statement within a Java function can call *neither* any Zlang functions *nor* any Java functions.
+Under some circumstances, the Java function can call some functions,
 which, however, is not recommended.
 
 A *Java library* is a library consisting of Java functions.
-A Java library is used to build a Zlang library (which will be defined below) at Java runtime,
-and it provides the Zlang functions of the Zlang library,
+A Java library is used to build a Zlang library (which will be defined later) at Java runtime,
+and it provides the Zlang functions of the Zlang library
 with the Java functions of the Java library to call.
 
 To build a Java library at Java runtime, create an instance of the `JavaLibrary.Builder` class,
@@ -29,8 +34,8 @@ use the corresponding methods provided by the `Library.Builder` class to add the
 and other Zlang/Java libraries,
 and finally invoke the `build()` method to obtain an instance of a Zlang library.
 
-In a Zlang library *Z*, a Zlang function can call any Zlang function of *Z*, any Java function of any Java
-library of *Z*, and any Zlang/Java function of any Zlang library of *Z*.
+In a Zlang library *Z*, a statement within Zlang function can call any Zlang function of *Z*,
+any Java function of any Java library of *Z*, and any Zlang/Java function of any Zlang library of *Z*.
 
 ## Structure of a Zlang function
 
@@ -87,7 +92,7 @@ function max(a, b, c) {
 
 ## Interactions between Zlang functions
 
-A Zlang function can call itself, any previous Zlang functions, or any latter Zlang functions:
+A statement with a Zlang function can call the Zlang function itself, any previous Zlang functions, or any latter Zlang functions:
 
 See an example:
 
@@ -116,9 +121,9 @@ function fib(n) {
 }
 ```
 
-## A Zlang function calls a Java function
+## Call a Java function
 
-Suppose on an Android device, a Zlang function want to print an Android log.
+Suppose on an Android device, a statement within a Zlang function want to print an Android log.
 
 Since Zlang does not provide any function for printing an Android log, we need to write a custom Java function.
 
