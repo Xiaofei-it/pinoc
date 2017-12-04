@@ -8,3 +8,4 @@
 .externalNativeBuild
 /repo
 /jar-test
+localRepos/

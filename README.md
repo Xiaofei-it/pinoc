@@ -100,6 +100,11 @@ buildscript {
 }
 ```
 
+Disable trojan temporarily by adding the following in the **project/gradle.properties** or **module/gradle.properties**:
+```
+trojan-plugin.enabled=false //default is true
+```
+
 To learn Zlang, please refer to [Zlang](docs/zlang/zlang.md).
 
 To learn Trojan, please refer to [Usage of Trojan](docs/trojan_usage.md).
