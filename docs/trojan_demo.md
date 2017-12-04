@@ -1,6 +1,6 @@
 # Demo of Trojan
 
-This chapter covers the usage of the Trojan library.
+This chapter covers a demo of the Trojan library.
 
 ## Configuration
 
