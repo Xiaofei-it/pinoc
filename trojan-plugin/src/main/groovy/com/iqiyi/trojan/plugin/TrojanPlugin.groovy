@@ -31,15 +31,11 @@ import static org.objectweb.asm.ClassReader.EXPAND_FRAMES
 
 public class TrojanPlugin extends Transform implements org.gradle.api.Plugin<Project> {
 
-  def isEnabled
+  def trojanExt
 
   void apply(Project project) {
 
-    isEnabled = project.hasProperty("trojan-plugin.enabled") && Boolean.parseBoolean(
-        project.property("trojan-plugin.enabled"))
-
-    project.extensions.create('trojan', TrojanExtension)
-
+    trojanExt = new TrojanExtension(project)
 
     project.repositories {
       google()
@@ -84,7 +80,7 @@ public class TrojanPlugin extends Transform implements org.gradle.api.Plugin<Pro
       TransformOutputProvider outputProvider, boolean isIncremental)
       throws IOException, TransformException, InterruptedException {
 
-    if (!isEnabled) {
+    if (!trojanExt.isEnabled) {
       println "trojan is disable,then return"
       return
     }
