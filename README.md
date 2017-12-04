@@ -12,7 +12,9 @@ The current version of the Trojan library supports:
 
 ## Principle
 
-<img src="docs/fig.png" width="600" height="600"/>
+<img src="docs/pics/flow.png" width="1046" height="577"/>
+
+<img src="docs/pics/fig.png" width="1046" height="577"/>
 
 When an Android app is built, the Trojan plugin replaces all of the Java methods.
 After the replacement, each method (the original method) is replaced with its variant.
@@ -118,6 +120,8 @@ trojan-plugin.enabled=false //default is true
 To learn Zlang, please refer to [Zlang](docs/zlang/zlang.md).
 
 To learn Trojan, please refer to [Usage of Trojan](docs/trojan_usage.md).
+
+To learn a demo, please refer to [Usage of Trojan](docs/trojan_demo.md).
 
 ## License
 
