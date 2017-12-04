@@ -108,3 +108,9 @@ Add the Java dependency by the following:
 ```
 Trojan.addJavaDependency(javaLibrary);
 ```
+
+## Demo
+
+Refer to [Demo](demo.md) to read a demo.
+
+You may refer to the source code in the `app` module of this project for more details.

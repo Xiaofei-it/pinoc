@@ -1,110 +1,79 @@
 # Demo of Trojan
 
-This chapter covers a demo of the Trojan library.
+This chapter illustrates a demo of the Trojan library.
 
-## Configuration
+## An Activity
 
-Before using Trojan, you should configure it with a Json string which specifies the modification of
-methods.
+In our app, there is an `Activity`:
 
-The Json string is in the following format:
+```
+public class DemoActivity extends AppCompatActivity {
 
+    private void init() {
+        Intent intent = getIntent();
+        TextView textView = (TextView) findViewById(R.id.tv);
+        textView.setText(intent.getStringExtra("tmp").toUpperCase());
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_demo);
+        init();
+    }
+}
+
+```
+
+After the app is released, we find that the `Intent` passed to the `DemoActivity` may be `null`.
+Also, the key which maps the `String` in the `Intent` is `temp` instead of `tmp`.
+
+## Hotfix
+
+We want to replace `init` with the following:
+
+```
+private void init() {
+    Intent intent = getIntent();
+    String tmp = intent.getStringExtra("temp");
+    if (tmp != null) {
+        TextView textView = (TextView) findViewById(R.id.tv);
+        textView.setText(tmp.toUpperCase());
+    }
+}
+```
+
+## Write code in Zlang
+
+```
+function main(className, methodName, methodSignature, this, parameters) {
+   intent = _invoke_method(this, "getIntent");
+   tmp = _invoke_public_method(intent, "getStringExtra", "temp");
+   if (tmp != null) {
+      textView = _invoke_method(this, "findViewById", _get_static_field("com.iqiyi.trojantest.R$id", "tv"));
+      _invoke_public_method(textView, "setText", _invoke_public_method(tmp, "toUpperCase"));
+   }
+   return null;
+}
+```
+
+Since we want to replace the original method, we must give the method a return value, which is `null` above.
+
+## Write the configuration
+
+We write the configuration:
 ```
 {targets:[
-    {class: "...", method_name: "...", method_sig: "...", library: int},
-    {class: "...", method_name: "...", method_sig: "...", library: int},
-    {class: "...", method_name: "...", method_sig: "...", library: int}
+    {class: "com/iqiyi/trojantest/DemoActivity", method_name: "init", method_sig: "()V", library: 0}
 ],
 libraries:[
-"function main(className, methodName, methodSignature, target, parameters) \{\
-    ...
-\}",
-"function main(className, methodName, methodSignature, target, parameters) \{\
-    ...
+"function main(className, methodName, methodSignature, this, parameters) \{\
+   intent = _invoke_method(this, \"getIntent\");\
+   tmp = _invoke_public_method(intent, \"getStringExtra\", \"temp\");\
+   if (tmp != null) \{\
+      textView = _invoke_method(this, \"findViewById\", _get_static_field(\"com.iqiyi.trojantest.R$id\", \"tv\"));\
+      _invoke_public_method(textView, \"setText\", _invoke_public_method(tmp, \"toUpperCase\"));\
+   \}\
+   return null;\
 \}"
 ]}
-```
-
-The array mapped by "targets" is an array of Json objects,
-each of which specifies the method to modify by the name of the class, the name of the method,
-the signature of the method and the index of a Zlang library containing the instructions to execute.
-
-The array mapped by "libraries" is an array of strings,
-each of which is a Zlang library mentioned above. Specifically, the Zlang library contains several Zlang
-functions, one of which is `main(className, methodName, methodSignature, target, parameters)`,
-which is the entrance of the instuctions to execute. The parameters of the `main` function are:
-
-| Parameter | Meaning |
-| :------: | :------:|
-|  className | a string indicating the name of the class|
-|  methodName | a string indicating the name of the method|
-|  methodSignature| a string indicating the signature of the method|
-|  target      | an object on which the method is invoked. It is `null` if the method is static.|
-| parameters| an array of the parameters passed to the method being invoked|
-
-If the `main` function has a return value, then the original method is replaced and the reture value
-is regarded as the return value of the original method.
-
-If the `main` function does not have a return value, then the remaining instructions of the original
-method are still executed.
-
-Note that if the original method does not have a return value but you want to replace it, then
-you should still make your `main` function have a return value, which will be discarded after
-the execution of the `main` function.
-
-The following is an example:
-
-```
-{targets:[
-    {class: "com/iqiyi/trojantest/MainActivity", method_name: "onPause", method_sig: "()V", library: 1},
-    {class: "com/iqiyi/trojantest/MainActivity", method_name: "onResume", method_sig: "()V", library: 0},
-    {class: "com/iqiyi/trojantest/MainActivity", method_name: "g1", method_sig: "(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/Integer;IDLcom/iqiyi/trojantest/MainActivity;Ljava/lang/Boolean;)V", library: 0}
-],
-libraries:[
-"function main(className, methodName, methodSignature, target, parameters) \{\
-   _println(\"library 0: \" + className + \" \" + methodName + \" \" + methodSignature + \" \" + target);\
-   len = _length(parameters);\
-   for i = 0 to len - 1 step 1 \{\
-      _println(\"library 0 p:\" + parameters[i]);\
-   \}\
-   _println(\"library 0 test_internal:\" + test_internal(\"Hehe\"));\
-\}",
-"function main(className, methodName, methodSignature, target, parameters) \{\
-   _println(\"library 1: \" + className + \" \" + methodName + \" \" + methodSignature + \" \" + target);\
-   len = _length(parameters);\
-   for i = 0 to len - 1 step 1 \{\
-      _println(\"library 1 p:\" + parameters[i]);\
-   \}\
-   _println(\"library 1 test_java:\" + test_java(\"Hehe\"));\
-\}"
-]}
-```
-
-## Add the Zlang dependency
-
-You can add the Zlang dependency, which is a Zlang library containing Zlang functions,
-which can be called from the functions of each of the libraries in the specified configuration.
-Trojan will add the dependency to each of the libraries when it is built.
-
-Therefore, you can put all of the fundamental functions into the Zlang dependency.
-
-Add the Zlang dependency by the following:
-
-```
-Trojan.addDependency("...");
-```
-
-## Add the Java dependency
-
-You can add the Java dependency, which is a Java library containing Java functions,
-which can be called from the functions of each of the libraries in the specified configuration.
-Trojan will add the dependency to each of the libraries when it is built.
-
-Therefore, you can put into the Java dependency all of the fundamental functions which interact
-with Java, such as network facilities and I/O facilities.
-
-Add the Java dependency by the following:
-
-```
-Trojan.addJavaDependency(javaLibrary);
 ```

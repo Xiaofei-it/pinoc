@@ -81,11 +81,11 @@ class TrojanCore {
      * @param className
      * @param methodName
      * @param methodSignature
-     * @param target
+     * @param thiz
      * @param parameters
      * @return true if replaced.
      */
-    Object onEnterMethod(String className, String methodName, String methodSignature, Object target, Object[] parameters) {
+    Object onEnterMethod(String className, String methodName, String methodSignature, Object thiz, Object[] parameters) {
         //Logger.i(TAG, "enter " + className + " " + methodName + " " + methodSignature);
         // We can *not* append a target to the string because if the target class has override toString, it will cause a stack-over-flow.
         ConcurrentHashMap<String, Library> libraries = mLibraries.get(className);
@@ -97,7 +97,7 @@ class TrojanCore {
             return Library.NO_RETURN_VALUE;
         }
         try {
-            Object result = library.execute("main", new Object[]{className, methodName, methodSignature, target, parameters});
+            Object result = library.execute("main", new Object[]{className, methodName, methodSignature, thiz, parameters});
             return result;
         } catch (ZlangRuntimeException e) {
             Logger.e(TAG, "Execution error.", e);

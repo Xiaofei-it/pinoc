@@ -29,8 +29,8 @@ public class Trojan {
 
     private static final TrojanCore TROJAN_CORE = TrojanCore.getInstance();
 
-    public static Object onEnterMethod(String className, String methodName, String methodSignature, Object target, Object[] parameters) {
-        return TROJAN_CORE.onEnterMethod(className, methodName, methodSignature, target, parameters);
+    public static Object onEnterMethod(String className, String methodName, String methodSignature, Object thiz, Object[] parameters) {
+        return TROJAN_CORE.onEnterMethod(className, methodName, methodSignature, thiz, parameters);
     }
 
     public static void config(String configuration) {
