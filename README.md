@@ -121,7 +121,7 @@ To learn Zlang, please refer to [Zlang](docs/zlang/zlang.md).
 
 To learn Trojan, please refer to [Usage of Trojan](docs/trojan_usage.md).
 
-To learn a demo, please refer to [Usage of Trojan](docs/trojan_demo.md).
+To learn a demo, please refer to [Demo of Trojan](docs/trojan_demo.md).
 
 ## License
 

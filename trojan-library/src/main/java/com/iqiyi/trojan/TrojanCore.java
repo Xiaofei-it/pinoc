@@ -51,6 +51,7 @@ class TrojanCore {
         mLibraries = new ConcurrentHashMap<>();
         mDependencies = new ConcurrentLinkedQueue<>();
         mJavaDependencies = new ConcurrentLinkedQueue<>();
+        mJavaDependencies.add(TrojanLibraries.JAVA_LIBRARY);
     }
 
     static TrojanCore getInstance() {

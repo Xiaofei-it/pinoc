@@ -2,7 +2,8 @@
     {class: "com/iqiyi/trojantest/MainActivity", method_name: "onPause", method_sig: "()V", library: 1},
     {class: "com/iqiyi/trojantest/MainActivity", method_name: "onResume", method_sig: "()V", library: 0},
     {class: "com/iqiyi/trojantest/MainActivity", method_name: "g1", method_sig: "(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/Integer;IDLcom/iqiyi/trojantest/MainActivity;Ljava/lang/Boolean;)V", library: 0},
-    {class: "com/iqiyi/trojantest/DemoActivity", method_name: "init", method_sig: "()V", library: 2}
+    {class: "com/iqiyi/trojantest/DemoActivity", method_name: "init", method_sig: "()V", library: 2},
+    {class: "com/iqiyi/trojantest/DemoActivity$1", method_name: "onClick", method_sig: "(Landroid/view/View;)V", library: 3}
 ],
 libraries:[
 "function main(className, methodName, methodSignature, this, parameters) \{\
@@ -29,5 +30,10 @@ libraries:[
       _invoke_public_method(textView, \"setText\", _invoke_public_method(tmp, \"toUpperCase\"));\
    \}\
    return null;\
+\}",
+"function main(className, methodName, methodSignature, this, parameters) \{\
+   context = get_outer_context(this);\
+   id = _invoke_public_method(parameters[0], \"getId\");\
+   track(_get_class_name(context), id);\
 \}"
 ]}
