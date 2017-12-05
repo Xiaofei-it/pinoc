@@ -25,8 +25,35 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'com.android.support:appcompat-v7:25.3.1'
-    api 'xiaofei.library:zlang:0.1.0'
-    testImplementation 'junit:junit:4.12'
+    compileOnly deps.appcompatv7
+    api deps.zlang
+    testImplementation deps.junit
 }
-apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
+
+
+ext {
+    bintrayRepo = 'trojan'
+    bintrayName = 'trojan-library'
+
+    publishedGroupId = 'com.iqiyi'
+    libraryName = 'trojan-library'
+    artifact = 'trojan-library'
+
+    libraryDescription = 'trojan-library description'
+
+    siteUrl = 'https://github.com/Xiaofei-it'
+    gitUrl = 'https://github.com/Xiaofei-it'
+
+    libraryVersion = getProperty("trojan-version")
+
+    developerId = 'zhaolifei'
+    developerName = 'zhaolifei'
+    developerEmail = 'xiaofei.it@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'

@@ -92,22 +92,14 @@ A demo is provided, which you may refer to. See [Demo](docs/trojan_demo.md) for 
 
 To use the Trojan library, add the following dependency:
 
-```
-compile 'com.iqiyi.ishow.support:trojan:0.0.67'
-```
-
-Also, the Trojan plugin is needed at compile time:
 
 ```
 buildscript {
     repositories {
         jcenter()
-        maven {
-            url "http://maven.mbd.qiyi.domain/nexus/content/repositories/mbd-show/"
-        }
     }
     dependencies {
-        classpath 'com.iqiyi.ishow.support:trojan-plugin:0.0.135'
+        classpath 'com.iqiyi:trojan-plugin:0.2.0' 
     }
 }
 ```
