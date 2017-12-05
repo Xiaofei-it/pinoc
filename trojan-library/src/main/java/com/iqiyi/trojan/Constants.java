@@ -27,4 +27,5 @@ class Constants {
     static final String METHOD_NAME = "method_name";
     static final String METHOD_SIGNATURE = "method_sig";
     static final String LIBRARY_INDEX = "library";
+    static final String THREAD_MODE = "thread_mode";
 }
