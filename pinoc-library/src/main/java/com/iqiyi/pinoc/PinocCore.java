@@ -1,19 +1,17 @@
 /**
- *
  * Copyright 2017 iQIYI.com
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 package com.iqiyi.pinoc;
@@ -22,7 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Objects;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -41,7 +39,7 @@ class PinocCore {
 
     private static volatile PinocCore sInstance = null;
 
-    private ConcurrentHashMap<String, ConcurrentHashMap<String, Library>> mLibraries;
+    private ConcurrentHashMap<String, ConcurrentHashMap<String, LibraryWrapper>> mLibraries;
 
     private ConcurrentLinkedQueue<Library> mDependencies;
 
@@ -78,7 +76,6 @@ class PinocCore {
     }
 
     /**
-     *
      * @param className
      * @param methodName
      * @param methodSignature
@@ -89,17 +86,37 @@ class PinocCore {
     Object onEnterMethod(String className, String methodName, String methodSignature, Object thiz, Object[] parameters) {
         //Logger.i(TAG, "enter " + className + " " + methodName + " " + methodSignature);
         // We can *not* append a target to the string because if the target class has override toString, it will cause a stack-over-flow.
-        ConcurrentHashMap<String, Library> libraries = mLibraries.get(className);
+        ConcurrentHashMap<String, LibraryWrapper> libraries = mLibraries.get(className);
         if (libraries == null) {
             return Library.NO_RETURN_VALUE;
         }
-        Library library = libraries.get(getMethodId(methodName, methodSignature));
+        LibraryWrapper wrapper = libraries.get(getMethodId(methodName, methodSignature));
+        final Library library = wrapper.mLibrary;
         if (library == null) {
             return Library.NO_RETURN_VALUE;
         }
+
+        final Object[] objects = new Object[]{className, methodName, methodSignature, thiz, parameters};
+        Callable callable = new Callable() {
+            @Override
+            public Object call() throws Exception {
+                return library.execute("main", objects);
+            }
+        };
+
+        Object result = Library.NO_RETURN_VALUE;
         try {
-            Object result = library.execute("main", new Object[]{className, methodName, methodSignature, thiz, parameters});
-            return result;
+            switch (wrapper.mMode.getMode()) {
+                case ThreadMode.CURRENT:
+                    result = callable.call();
+                    break;
+                case ThreadMode.MAIN:
+                    result = Schedulers.MAIN.call(callable);
+                    break;
+                case ThreadMode.BACKGROUND:
+                    result = Schedulers.BACKGROUND.call(callable);
+                    break;
+            }
         } catch (ZlangRuntimeException e) {
             Logger.e(TAG, "Execution error.", e);
             return Library.NO_RETURN_VALUE;
@@ -107,20 +124,21 @@ class PinocCore {
             Logger.e(TAG, "Unknown error.", t);
             return Library.NO_RETURN_VALUE;
         }
+        return result;
     }
 
     private static boolean isEmpty(String string) {
         return string == null || string.equals("");
     }
 
-    private void store(String className, String methodName, String methodSignature, Library library) {
-        ConcurrentHashMap<String, Library> map = mLibraries.get(className);
+    private void store(String className, String methodName, String methodSignature, LibraryWrapper libraryWrapper) {
+        ConcurrentHashMap<String, LibraryWrapper> map = mLibraries.get(className);
         if (map == null) {
             map = new ConcurrentHashMap<>();
             mLibraries.put(className, map);
         }
         String key = getMethodId(methodName, methodSignature);
-        map.put(key, library);
+        map.put(key, libraryWrapper);
     }
 
     void config(String configuration) {
@@ -178,11 +196,27 @@ class PinocCore {
             if (isEmpty(methodSignature)) {
                 continue;
             }
-            int libraryIndex = target.optInt(Constants.LIBRARY_INDEX);
-            Library library = zlangLibraries[libraryIndex];
-            if (library != null) {
-                store(className, methodName, methodSignature, library);
+            int libraryIndex = target.optInt(Constants.LIBRARY_INDEX, -1);
+            if (libraryIndex <= -1 || libraryIndex >= zlangLibraries.length) {
+                continue;
             }
+
+            Library library = zlangLibraries[libraryIndex];
+            int threadMode = target.optInt(Constants.THREAD_MODE, ThreadMode.CURRENT);
+
+            if (library != null) {
+                store(className, methodName, methodSignature, new LibraryWrapper(new ThreadMode(threadMode), library));
+            }
+        }
+    }
+
+    static final class LibraryWrapper {
+        final ThreadMode mMode;
+        final Library mLibrary;
+
+        LibraryWrapper(ThreadMode mode, Library library) {
+            this.mMode = mode;
+            this.mLibrary = library;
         }
     }
 }
