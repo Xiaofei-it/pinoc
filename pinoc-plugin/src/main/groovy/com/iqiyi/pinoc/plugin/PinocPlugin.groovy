@@ -44,6 +44,12 @@ public class PinocPlugin extends Transform implements org.gradle.api.Plugin<Proj
       }
     }
     project.dependencies {
+
+      if (!pinocExt.isDependenciesEnabled) {
+        println "internal dependency is disable, you need add pinoc-library dependency in your build.gradle"
+        return
+      }
+
       implementation("com.iqiyi:pinoc-library:$pinocExt.pinocLibraryVersion", {
         exclude module: "zlang"
       })

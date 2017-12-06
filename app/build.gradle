@@ -36,7 +36,7 @@ buildscript {
         //classpath 'com.iqiyi.trojan.plugin:trojan-plugin:0.0.57'
 //        classpath 'com.iqiyi.ishow.support:trojan-plugin:show'
 //        classpath 'com.iqiyi.ishow.support:trojan-plugin:0.0.125'
-        classpath 'com.iqiyi:pinoc-plugin:0.2.0'
+        classpath 'com.iqiyi:pinoc-plugin:0.2.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

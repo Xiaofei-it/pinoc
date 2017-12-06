@@ -99,7 +99,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.iqiyi:pinoc-plugin:0.2.0' 
+        classpath 'com.iqiyi:pinoc-plugin:0.2.1' 
     }
 }
 

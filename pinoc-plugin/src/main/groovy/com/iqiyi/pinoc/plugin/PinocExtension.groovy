@@ -6,10 +6,12 @@ class PinocExtension {
   final def KEY_ENABLE = "pinoc-plugin.enabled"
   final def KEY_PINOC_LIBRARY_VERSION = "pinoc-version"
   final def KEY_ZLANG_VERSION = "zlang-version"
+  final def KEY_IS_DEPENDENCIES_ENABLED = "pinoc-dependencies.enabled"
 
   def isEnabled
   def pinocLibraryVersion
   def zlangLibraryVersion
+  def isDependenciesEnabled = true
 
   PinocExtension(Project project) {
     this.isEnabled =
@@ -18,6 +20,8 @@ class PinocExtension {
         project.property(KEY_PINOC_LIBRARY_VERSION) : "0.2.0"
     this.zlangLibraryVersion =
         project.hasProperty(KEY_ZLANG_VERSION) ? project.property(KEY_ZLANG_VERSION) : "0.2.0"
+    this.isDependenciesEnabled = project.hasProperty(KEY_IS_DEPENDENCIES_ENABLED) ?
+        Boolean.parseBoolean(project.property(KEY_IS_DEPENDENCIES_ENABLED)) : true
   }
 
   def isEnabled() {
