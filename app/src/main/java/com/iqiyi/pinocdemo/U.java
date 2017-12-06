@@ -16,7 +16,7 @@
  *
  */
 
-package com.iqiyi.trojantest;
+package com.iqiyi.pinocdemo;
 
 /**
  * Created by Xiaofei on 2017/10/18.

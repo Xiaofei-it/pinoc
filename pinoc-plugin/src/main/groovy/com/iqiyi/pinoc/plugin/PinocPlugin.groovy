@@ -56,6 +56,11 @@ public class PinocPlugin extends Transform implements org.gradle.api.Plugin<Proj
       implementation "xiaofei.library:zlang:$pinocExt.zlangLibraryVersion"
     }
 
+    if (!pinocExt.isEnabled) {
+      println "pinoc is disable,then return"
+      return
+    }
+
     def android = project.extensions.getByType(AppExtension);
     android.registerTransform(this)
   }
@@ -85,11 +90,6 @@ public class PinocPlugin extends Transform implements org.gradle.api.Plugin<Proj
       Collection<TransformInput> referencedInputs,
       TransformOutputProvider outputProvider, boolean isIncremental)
       throws IOException, TransformException, InterruptedException {
-
-    if (!pinocExt.isEnabled) {
-      println "pinoc is disable,then return"
-      return
-    }
 
     println '//===============asm visit start===============//'
     //遍历inputs里的TransformInput

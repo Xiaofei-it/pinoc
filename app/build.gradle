@@ -3,11 +3,11 @@ apply plugin: 'pinoc'
 
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion sdk_versions.compileSdk
     defaultConfig {
-        applicationId "com.iqiyi.trojantest"
-        minSdkVersion 9
-        targetSdkVersion 25
+        minSdkVersion sdk_versions.minSdk
+        targetSdkVersion sdk_versions.targetSdk
+        applicationId "com.iqiyi.pinocdemo"
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -37,6 +37,7 @@ buildscript {
 //        classpath 'com.iqiyi.ishow.support:trojan-plugin:show'
 //        classpath 'com.iqiyi.ishow.support:trojan-plugin:0.0.125'
         classpath 'com.iqiyi:pinoc-plugin:0.2.1'
+//        classpath files("../localRepos/pinoc-plugin-0.2.1.jar")
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -47,9 +48,9 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'com.android.support:appcompat-v7:25.3.1'
+    implementation deps.appcompatv7
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-//    implementation project(':trojan-library')
+//    implementation project(':pinoc-library')
 //    compile 'com.iqiyi.ishow.support:trojan:0.0.63'
     testImplementation 'junit:junit:4.12'
 }

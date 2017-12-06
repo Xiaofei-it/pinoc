@@ -3,7 +3,8 @@
 buildscript {
 
   ext.sdk_versions = [compileSdk: 27,
-                      minSdk    : 9]
+                      minSdk    : 14,
+                      targetSdk : 27]
 
 
   ext.deps = [zlang        : 'xiaofei.library:zlang:0.2.0',

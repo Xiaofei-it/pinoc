@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.iqiyi.trojantest">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.iqiyi.pinocdemo"
+    tools:overrideLibrary="android.support.v7.appcompat">
 
     <application
         android:allowBackup="true"

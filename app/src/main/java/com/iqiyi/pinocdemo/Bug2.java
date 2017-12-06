@@ -16,7 +16,7 @@
  *
  */
 
-package com.iqiyi.trojantest;
+package com.iqiyi.pinocdemo;
 
 import java.io.IOException;
 

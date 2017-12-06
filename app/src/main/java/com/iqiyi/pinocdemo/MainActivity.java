@@ -16,21 +16,17 @@
  *
  */
 
-package com.iqiyi.trojantest;
+package com.iqiyi.pinocdemo;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-
 import com.iqiyi.pinoc.Pinoc;
-
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 import xiaofei.library.zlang.JavaFunction;
 import xiaofei.library.zlang.JavaLibrary;
 import xiaofei.library.zlang.Library;
@@ -88,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .build());
         Pinoc.addDependency(new Library.Builder().addFunctions("function test_internal(a) {return a + 1;}").build());
-        InputStream is = getResources().openRawResource(R.raw.config);
+        InputStream is = getResources().openRawResource(com.iqiyi.pinocdemo.R.raw.config);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] bytes = new byte[1024];
         int num;
@@ -104,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(com.iqiyi.pinocdemo.R.layout.activity_main);
         init();
         g1("a", "j", true, 8, 8, 8.0f, this, false);
         g2("a", "j", true, 8, 8, 8.0, 8.0f, 8L, 'c', this, false);
@@ -115,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (Throwable t) {
 
         }
-        findViewById(R.id.demo).setOnClickListener(new View.OnClickListener() {
+        findViewById(com.iqiyi.pinocdemo.R.id.demo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DemoActivity.class);

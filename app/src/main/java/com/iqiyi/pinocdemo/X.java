@@ -16,10 +16,9 @@
  *
  */
 
-package com.iqiyi.trojantest;
+package com.iqiyi.pinocdemo;
 
 import com.iqiyi.pinoc.Pinoc;
-
 import xiaofei.library.zlang.Library;
 
 /**

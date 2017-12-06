@@ -248,7 +248,7 @@ class PinocPluginMethodVisitor extends AdviceAdapter {
         resultOffset = offset;
         mv.visitMethodInsn(
                 Opcodes.INVOKESTATIC,
-                "com/iqiyi/trojan/Trojan",
+                "com/iqiyi/pinoc/Pinoc",
                 "onEnterMethod",
                 "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;",
                 false);
