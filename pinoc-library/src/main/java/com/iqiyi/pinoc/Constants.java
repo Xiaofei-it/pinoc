@@ -16,30 +16,15 @@
  *
  */
 
-package com.iqiyi.trojantest;
-
-import com.iqiyi.pinoc.Pinoc;
-
-import xiaofei.library.zlang.Library;
+package com.iqiyi.pinoc;
 
 /**
- * Created by Xiaofei on 2017/10/24.
+ * Created by Xiaofei on 2017/10/17.
  */
 
-public class X {
-    public int g(int a, int b) {
-        Object r = Pinoc.onEnterMethod("com/iqiyi/trojantest/X", "g", "(II)I", this, new Object[]{Integer.valueOf(a), Integer.valueOf(b)});
-        if(r != Library.NO_RETURN_VALUE) {
-            if (r instanceof Integer) {
-                return (int) r;
-            }
-        }
-        int c = a + b;
-        return c * 2;
-    }
-
-    public int g2(int a, int b) {
-        int c = a + b;
-        return c * 2;
-    }
+class Constants {
+    static final String CLASS = "class";
+    static final String METHOD_NAME = "method_name";
+    static final String METHOD_SIGNATURE = "method_sig";
+    static final String LIBRARY_INDEX = "library";
 }

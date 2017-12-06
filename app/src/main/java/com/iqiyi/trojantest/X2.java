@@ -18,7 +18,7 @@
 
 package com.iqiyi.trojantest;
 
-import com.iqiyi.trojan.Trojan;
+import com.iqiyi.pinoc.Pinoc;
 
 import xiaofei.library.zlang.Library;
 
@@ -56,7 +56,7 @@ public class X2 {
     }
     public int g1(long a, double b, int c, boolean d) {
         a2=90;
-        Object r = Trojan.onEnterMethod("com/iqiyi/trojantest/X", "g", "(II)I", this, new Object[]{Long.valueOf(a), Double.valueOf(b), Integer.valueOf(c), Boolean.valueOf(d)});
+        Object r = Pinoc.onEnterMethod("com/iqiyi/trojantest/X", "g", "(II)I", this, new Object[]{Long.valueOf(a), Double.valueOf(b), Integer.valueOf(c), Boolean.valueOf(d)});
         if(r != Library.NO_RETURN_VALUE) {
             if (r instanceof Integer) {
                 return (int) r;
@@ -72,7 +72,7 @@ public class X2 {
 
     public static int g3(long a, double b, int c, boolean d) {
         a2=90;
-        Object r = Trojan.onEnterMethod("com/iqiyi/trojantest/X", "g", "(II)I", null, new Object[]{Long.valueOf(a), Double.valueOf(b), Integer.valueOf(c), Boolean.valueOf(d)});
+        Object r = Pinoc.onEnterMethod("com/iqiyi/trojantest/X", "g", "(II)I", null, new Object[]{Long.valueOf(a), Double.valueOf(b), Integer.valueOf(c), Boolean.valueOf(d)});
         if(r != Library.NO_RETURN_VALUE) {
             if (r instanceof Integer) {
                 return (int) r;

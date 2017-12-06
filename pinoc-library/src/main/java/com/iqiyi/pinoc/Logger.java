@@ -16,30 +16,35 @@
  *
  */
 
-package com.iqiyi.trojantest;
+package com.iqiyi.pinoc;
 
-import com.iqiyi.pinoc.Pinoc;
-
-import xiaofei.library.zlang.Library;
+import android.util.Log;
 
 /**
- * Created by Xiaofei on 2017/10/24.
+ * Created by Xiaofei on 2017/10/17.
  */
 
-public class X {
-    public int g(int a, int b) {
-        Object r = Pinoc.onEnterMethod("com/iqiyi/trojantest/X", "g", "(II)I", this, new Object[]{Integer.valueOf(a), Integer.valueOf(b)});
-        if(r != Library.NO_RETURN_VALUE) {
-            if (r instanceof Integer) {
-                return (int) r;
-            }
-        }
-        int c = a + b;
-        return c * 2;
+class Logger {
+    private static volatile boolean sDebug = true;
+    void setDebug(boolean debug) {
+        sDebug = debug;
     }
 
-    public int g2(int a, int b) {
-        int c = a + b;
-        return c * 2;
+    static void e(String tag, String msg) {
+        if (sDebug) {
+            Log.e(tag, msg);
+        }
+    }
+
+    static void e(String tag, String msg, Throwable cause) {
+        if (sDebug) {
+            Log.e(tag, msg, cause);
+        }
+    }
+
+    public static void i(String tag, String msg) {
+        if (sDebug) {
+            Log.e(tag, msg);
+        }
     }
 }

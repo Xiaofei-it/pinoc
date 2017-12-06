@@ -20,7 +20,7 @@ package com.iqiyi.trojantest;
 
 import android.app.Activity;
 
-import com.iqiyi.trojan.Trojan;
+import com.iqiyi.pinoc.Pinoc;
 
 import xiaofei.library.zlang.Library;
 
@@ -30,7 +30,7 @@ import xiaofei.library.zlang.Library;
 
 public class X3 {
     static void g1(String s, int i) {
-        Object result = Trojan.onEnterMethod("Test", "g1", "(Ljava/lang/String;I)V", null, new Object[]{s, i});
+        Object result = Pinoc.onEnterMethod("Test", "g1", "(Ljava/lang/String;I)V", null, new Object[]{s, i});
         if (result != Library.NO_RETURN_VALUE) {
             return;
         }
@@ -62,7 +62,7 @@ public class X3 {
     }
 
     static private long returnLong2(Long a) {
-        Object result = Trojan.onEnterMethod("MainActivity", "g", "()V", null, new Object[]{a});
+        Object result = Pinoc.onEnterMethod("MainActivity", "g", "()V", null, new Object[]{a});
         if (result != Library.NO_RETURN_VALUE) {
             if (result instanceof Long) {
                 return (Long) result;

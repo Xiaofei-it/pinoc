@@ -24,7 +24,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.iqiyi.trojan.Trojan;
+import com.iqiyi.pinoc.Pinoc;
 
 
 import java.io.ByteArrayOutputStream;
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int iii = 90;
     private void init() {
-        Trojan.addJavaDependency(new JavaLibrary.Builder().addFunction(new JavaFunction() {
+        Pinoc.addJavaDependency(new JavaLibrary.Builder().addFunction(new JavaFunction() {
                     @Override
                     public boolean isVarArgs() {
                         return false;
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .build());
-        Trojan.addDependency(new Library.Builder().addFunctions("function test_internal(a) {return a + 1;}").build());
+        Pinoc.addDependency(new Library.Builder().addFunctions("function test_internal(a) {return a + 1;}").build());
         InputStream is = getResources().openRawResource(R.raw.config);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] bytes = new byte[1024];
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             while ((num = is.read(bytes, 0, 1024)) != -1) {
                 baos.write(bytes, 0, num);
             }
-            Trojan.config(baos.toString().replace("\r", ""));
+            Pinoc.config(baos.toString().replace("\r", ""));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -136,14 +136,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void g1(String a, String b, boolean c, Integer d, int e, double f, MainActivity j, Boolean k) {
-        Object result = Trojan.onEnterMethod("MainActivity", "g", "()V", this, new Object[]{a, b, c, d, e, f, j, k});
+        Object result = Pinoc.onEnterMethod("MainActivity", "g", "()V", this, new Object[]{a, b, c, d, e, f, j, k});
         if (result != Library.NO_RETURN_VALUE) {
             return;
         }
         System.gc();
     }
     private boolean g2(String a, String b, boolean c, Integer d, int e, double f, float g, long h ,char i, MainActivity j, Boolean k) {
-        Object result = Trojan.onEnterMethod("MainActivity", "g", "()V", this, new Object[]{a, b, c, d, e, f, g, h, i, j ,k});
+        Object result = Pinoc.onEnterMethod("MainActivity", "g", "()V", this, new Object[]{a, b, c, d, e, f, g, h, i, j ,k});
         if (result != Library.NO_RETURN_VALUE) {
             if (result instanceof Boolean) {
                 return (boolean) result;
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Boolean g3(String a, String b, boolean c, Integer d, int e, double f, float g, long h ,char i, MainActivity j, Boolean k) {
-        Object result = Trojan.onEnterMethod("MainActivity", "g", "()V", this, new Object[]{a, b, c, d, e, f, g, h, i, j ,k});
+        Object result = Pinoc.onEnterMethod("MainActivity", "g", "()V", this, new Object[]{a, b, c, d, e, f, g, h, i, j ,k});
         if (result != Library.NO_RETURN_VALUE) {
             if (result == null) {
                 return null;
@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private Test g4(String a, String b, boolean c, Integer d, int e, double f, float g, long h ,char i, MainActivity j, Boolean k) {
-        Object result = Trojan.onEnterMethod("MainActivity", "g", "()V", this, new Object[]{a, b, c, d, e, f, g, h, i, j ,k});
+        Object result = Pinoc.onEnterMethod("MainActivity", "g", "()V", this, new Object[]{a, b, c, d, e, f, g, h, i, j ,k});
         if (result != Library.NO_RETURN_VALUE) {
             if (result == null) {
                 return null;
