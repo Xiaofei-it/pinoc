@@ -11,9 +11,9 @@ The Json string is in the following format:
 
 ```
 {targets:[
-    {class: "...", method_name: "...", method_sig: "...", library: int},
-    {class: "...", method_name: "...", method_sig: "...", library: int},
-    {class: "...", method_name: "...", method_sig: "...", library: int}
+    {class: "...", method_name: "...", method_sig: "...", library: int, thread_mode: int},
+    {class: "...", method_name: "...", method_sig: "...", library: int, thread_mode: int},
+    {class: "...", method_name: "...", method_sig: "...", library: int, thread_mode: int}
 ],
 libraries:[
 "function main(className, methodName, methodSignature, this, parameters) \{\
@@ -25,9 +25,11 @@ libraries:[
 ]}
 ```
 
-The array mapped by "targets" is an array of Json objects,
-each of which specifies the method to modify by the name of the class, the name of the method,
-the signature of the method and the index of a Zlang library containing the instructions to execute.
+Those mapped by "targets" above is an array of Json objects, each of which specifies a method
+to modify. Explicit key-value pairs of each Json object contains the following: the name of the declaring
+method's class, the name and the signature of this method, the index of a Zlang library containing
+some instructions to execute inside this method, and a thread mode which specifies these instructions'
+threading at its runtime
 
 The array mapped by "libraries" is an array of strings,
 each of which is a Zlang library mentioned above. Specifically, the Zlang library contains several Zlang
@@ -51,6 +53,17 @@ method are still executed.
 Note that if the original method does not have a return value but you want to replace it, then
 you should still make your `main` function have a return value, which will be discarded after
 the execution of the `main` function.
+
+The value mapped by "thread_mode" is a explicit integer to indicate runtime threading. Pinoc now
+supports 3 type of thread modes:
+    1. Current thread (thread_mode = 0)
+    2. The UI thread on Android platform (thread_mode = 1)
+    3. A new thread from a cached thread pool (thread_mode = 2)
+If the original method has a return value, this value can be acquired only on these circumstances:
+    1. The thread_mode is defined as 0 (that means the method still runs on the current thread)
+    2. The thread_mode is defined as 1 (that means the method is expected to run on the Android UI thread),
+       and the method is running exactly on the Android UI thread
+Except for the two cases above, a 'no-return-value' will be obtained in other cases
 
 The following is an example:
 
