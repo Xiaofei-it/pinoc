@@ -29,10 +29,10 @@ When building an Android app, the Pinoc plugin modifies all of the
 Java methods by injecting a particular code snippet at the entrance
 of each method to be modified.
 
-Take the following as an example:
+Take the following method as an example:
 
 ```
-package com.iqiyi.trojantest;
+package com.iqiyi.pinocdemo;
 
 public class Test {
     public String f(int a, int b) {
@@ -52,13 +52,13 @@ package com.iqiyi.trojantest;
 
 public class Test {
     public String f(int a, int b) {
-        Object var = Pinoc.onEnterMethod("com/iqiyi/trojantest/Test", "f", "(II)Ljava/lang/String;", this, new Object[]{a, b});
+        Object var = Pinoc.onEnterMethod("com/iqiyi/pinocdemo/Test", "f", "(II)Ljava/lang/String;", this, new Object[]{a, b});
         if(var != Library.NO_RETURN_VALUE) {
             if(var == null) {
                 return null;
             }
             if(var instanceof String) {
-                return (String)var;
+                return (String) var;
             }
         }
         if (a > b) {
@@ -71,37 +71,44 @@ public class Test {
 ```
 
 The injected code snippet invokes a static method called `onEneterMethod` of the `Pinoc` class.
-`onEnterMethod` receives the information about the invocation, including the name of the class,
-the name and the signature of the method being invoked, the object on which the method is being invoked,
-and the parameters of the method being invoked.
+`onEnterMethod` receives the information about the invocation,
+including the name of the declaring class of the method being invoked,
+the name and the signature of this method,
+the object on which this method is being invoked,
+and the parameters passed to this method.
 
 Inside `onEnterMethod`, Pinoc decides whether to execute some instructions and what to return after
 the execution, according to a configuration, which specifies:
 
-1. at the entrances of which methods, what instructions should be injected;
+1. Which methods should be modified, and their modifications;
 
-2. which methods should be replaced, and their replacements;
+2. Which methods should be replaced, and their replacements;
+
+As for method modification, the current version of Pinoc only supports the code injection at the entrance of
+a method.
 
 ## Modification at runtime
 
 At runtime, when Pinoc is initialized, it reads a configuration which specified the modification of the app.
 
 As mentioned above, when a method is being invoked, `Pinoc.onEnterMethod` receives the corresponding
-information about the invocation. Then Pinoc does the following:
+information about the invocation.
+Then Pinoc does the following according to whether to modify or replace this method respectively:
 
-1. If the specified instructions should be injected at the entrance of the method,
-Pinoc executes the injected instructions and returns `Library.NO_RETURN_VALUE`.
+1. If the specified instructions should be injected at the entrance of this method,
+Pinoc executes the injected instructions and returns `Library.NO_RETURN_VALUE`,
+a special `Object` defined in the [`Library`](https://github.com/Xiaofei-it/Zlang/blob/master/zlang/src/main/java/xiaofei/library/zlang/Library.java) class.
 Then the remaining instructions within the original method are executed.
 
-2. If the method should be replaced, Pinoc executes the instructions of its replacement and returns
-the return value of the replacement to the original method. Then the original method returns it directly
-and the remaining instructions are not executed. 
+2. If this method should be replaced, Pinoc executes the instructions of its replacement and returns
+the return value of the replacement to the original method.
+Then the original method returns it directly as its own return value,
+and the remaining instructions within the original method are thus not executed.
 
-3. If the method should neither be modified nor replaced, `Pinoc.onEnterMethod()` will simply
-return `Library.NO_RETURN_VALUE`. Then the instructions of original method are executed.
+3. If this method should neither be modified nor replaced, `Pinoc.onEnterMethod()` will simply
+return `Library.NO_RETURN_VALUE`. Then the instructions of the original method are executed.
 
-Note that Pinoc has a high performance in memory and CPU usage, so it will not
-affect the memory and CPU usage of your app.
+Note that Pinoc has a high performance in memory and CPU usage, so it will not affect the memory and CPU usage of your app.
 
 ## Instructions written in Zlang
 
@@ -112,8 +119,8 @@ allowed by some app stores.
 To avoid the above problems, Pinoc does not adopt the traditional classloader-based techniques, but
 adopt a novel technique which is classloader-free. Specifically, Pinoc executes the instructions
 written not in Java, but in the Zlang programming language,
-a flexible dynamically-typed programming language which runs on the JVM
-and supports access to Java objects and interaction with Java at runtime.
+a flexible dynamically-typed programming language running on the JVM
+and supporting access to Java objects and interaction with Java at runtime.
 It is easy to convert Java instructions into Zlang instructions.
 
 ## Comparision with other techniques
