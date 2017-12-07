@@ -2,6 +2,8 @@
 
 This chapter illustrates a demo of the Pinoc library.
 
+<img src="pics/pinoc_application.png" width="800" height="500"/>
+
 ## An Activity
 
 In our app, there is an `Activity`:
