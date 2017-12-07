@@ -1,0 +1,58 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion sdk_versions.compileSdk
+    defaultConfig {
+        minSdkVersion sdk_versions.minSdk
+        targetSdkVersion sdk_versions.targetSdk
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compileOnly deps.appcompatv7
+    api deps.zlang
+    testImplementation deps.junit
+}
+
+
+ext {
+    bintrayRepo = 'pinoc'
+    bintrayName = 'pinoc-library'
+
+    publishedGroupId = 'com.iqiyi'
+    libraryName = 'pinoc-library'
+    artifact = 'pinoc-library'
+
+    libraryDescription = 'pinoc-library description'
+
+    siteUrl = 'https://github.com/Xiaofei-it'
+    gitUrl = 'https://github.com/Xiaofei-it'
+
+    libraryVersion = getProperty("pinoc-version")
+
+    developerId = 'zhaolifei'
+    developerName = 'zhaolifei'
+    developerEmail = 'xiaofei.it@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
