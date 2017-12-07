@@ -11,6 +11,10 @@ supporting access to Java objects and interaction with Java at runtime.
 
 3. Supports interaction with Java at runtime and thus provides an classloader-free alternative for hotfix.
 
+4. To support functional programming in the future.
+
+5. To support object-oriented programming in the future.
+
 ## Preview
 
 Zlang is a flexible programming language which run on the JVM. It is easy to learn and use.
@@ -132,7 +136,11 @@ to execute the instructions of the function.
 Before using Zlang at Java runtime, you should compile the binaries or the source code
 of the Zlang interpreter into your project.
 
-0.0.7
+Add the following to your gradle:
+
+```
+compile 'xiaofei.library:zlang:0.2.0'
+```
 
 ### Building a Zlang library
 
@@ -154,7 +162,7 @@ int a = (int) library.execute("f", new Object[]{3});
 System.out.println(a);
 ```
 
-### Dependencies
+### Dependencies in Zlang
 
 When building a Zlang library, you may add another pre-built Zlang library, which contains functions
 for the functions in the new library to call.
@@ -164,6 +172,8 @@ library to call. A Java library is built similarly to a Zlang library, except th
 is replaced with a `JavaLibrary.Builder`.
 
 ## Learning more
+
+Learn the source code of Zlang from [HERE](https://github.com/Xiaofei-it/Zlang).
 
 Learn the syntax of Zlang from [HERE](docs/syntax.md).
 
