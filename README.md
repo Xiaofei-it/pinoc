@@ -92,9 +92,18 @@ all the operations allowed by Android.
 
 See [Principle of Pinoc](docs/pinoc_principle.md) for more information.
 
-## Demo
+## Usage and demo
 
-A demo is provided, which you may refer to. See [Demo](docs/pinoc_demo.md) for the details.
+The replacement and modification of a method should be written in Zlang,
+which is very easy to learn and use.
+
+To learn Zlang, please refer to [Zlang](docs/zlang/zlang.md).
+We are sure that you will be able to master and use it **in one hour**.
+
+As for Pinoc, we provide you with [Usage of Pinoc](docs/pinoc_usage.md).
+
+After learning Pinoc, you may refer to [Demo of Pinoc](docs/pinoc_demo.md)
+to learn a demo.
 
 ## Deployment
 
@@ -118,12 +127,6 @@ in `gradle.properties` of your project or modules:
 ```
 pinoc-plugin.enabled=false // default is true
 ```
-
-To learn Zlang, please refer to [Zlang](docs/zlang/zlang.md).
-
-To learn Pinoc, please refer to [Usage of Pinoc](docs/pinoc_usage.md).
-
-To learn a demo, please refer to [Demo of Pinoc](docs/pinoc_demo.md).
 
 ## License
 
