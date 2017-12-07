@@ -4,10 +4,28 @@ This chapter illustrates a demo of the Pinoc library.
 
 <img src="pics/pinoc_application.png" width="800" height="500"/>
 
+## Deploy Pinoc in the app
+
+1. In the `onCreate` of our application, start a service to download
+the configuration from your server.
+
+2. Once the configuration is downloaded, configure Pinoc
+in, for instance, the `onSuccess` method of the downloading callback:
+
+```
+Pinoc.addJavaDependency(yourJavaLibrary);
+Pinoc.addDependency(yourLibrary);
+Pinoc.config(configuration);
+```
+
+Now we have finished the deployment in our app. Then we release the app.
+
+After a few days, we find there is a bug in our app.
+And we also need to track an event.
 
 ## An Activity
 
-Suppose that in our app, there is an `Activity`:
+Our app has a following `Activity`:
 
 ```
 public class DemoActivity extends AppCompatActivity {
@@ -103,12 +121,12 @@ You may refer to `PinocLibraries` for more provided functions.
 
 ## Write the configuration
 
-We write the following configuration:
+Now we write the following configuration:
 
 ```
 {targets:[
-    {class: "com/iqiyi/trojantest/DemoActivity", method_name: "init", method_sig: "()V", library: 0},
-    {class: "com/iqiyi/trojantest/DemoActivity$1", method_name: "onClick", method_sig: "(Landroid/view/View;)V", library: 2}
+    {class: "com/iqiyi/pinocdemo/DemoActivity", method_name: "init", method_sig: "()V", library: 0},
+    {class: "com/iqiyi/pinocdemo/DemoActivity$1", method_name: "onClick", method_sig: "(Landroid/view/View;)V", library: 2}
 ],
 libraries:[
 "function main(className, methodName, methodSignature, this, parameters) \{\
@@ -130,3 +148,11 @@ libraries:[
 
 Note that `{`, `}` and `"` should be escaped in a Json string.
 
+## Configuration dispatch
+
+Now we put the configuration on our server.
+
+And the app will download it to configure Pinoc.
+
+After that, Pinoc will replace the `init` method
+and insert the code snippet for event tracking at the entrance of the `onClick` method.

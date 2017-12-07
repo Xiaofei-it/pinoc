@@ -4,7 +4,7 @@ This chapter covers the usage of the Pinoc library.
 
 ## Configuration
 
-Pinoc needs a configuration to specify the relacement or the modification of methods.
+Pinoc needs a configuration to specify the replacement or the modification of methods.
 The configuration is a Json string, which is always downloaded from a server.
 
 Therefore, remember to download a configuration from your server.
@@ -49,7 +49,7 @@ to modify and its modification, in that the explicit key-value pairs of each Jso
 
 The array mapped by `libraries` is an array of strings, each of which is a Zlang library mentioned above.
 Specifically, the Zlang library contains several Zlang functions, one of which
-is `main(className, methodName, methodSignature, this, parameters)`,
+is `main(className, methodName, methodSignature, thiz, parameters)`,
 which is the entrance of the instuctions to execute.
 The parameters of the `main` function are:
 
