@@ -12,9 +12,7 @@ The current version of the Pinoc library supports:
 
 ## Principle
 
-<img src="docs/pics/flow.png" width="1046" height="577"/>
-
-<img src="docs/pics/fig.png" width="1046" height="577"/>
+<img src="docs/pics/pinoc_structure.png" width="1200" height="1000"/>
 
 When an Android app is built, the Pinoc plugin replaces all of the Java methods.
 After the replacement, each method (the original method) is replaced with its variant.
@@ -33,6 +31,14 @@ the replacement or the modification by the Zlang compiler, after which the outpu
 is passed to the Zlang executor for execution.
 
 See [Principle of Pinoc](docs/pinoc_principle.md) for more information.
+
+## Application Scenarios
+
+<img src="docs/pics/pinoc_application.png" width="800" height="500"/>
+
+Through this Library, we can not only implement the dynamic repair of the code, but also make the relevant data collection and delivery through the injection of the code.
+
+By the way of code injection, PM can drive the collection and collection of application in a real sense.
 
 ## Comparision with other techniques
 
