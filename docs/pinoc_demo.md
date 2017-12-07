@@ -4,9 +4,10 @@ This chapter illustrates a demo of the Pinoc library.
 
 <img src="pics/pinoc_application.png" width="800" height="500"/>
 
+
 ## An Activity
 
-In our app, there is an `Activity`:
+Suppose that in our app, there is an `Activity`:
 
 ```
 public class DemoActivity extends AppCompatActivity {
@@ -32,9 +33,10 @@ public class DemoActivity extends AppCompatActivity {
 ```
 
 After the app is released, we find that the `Intent` passed to the `DemoActivity` may be `null`.
-Also, the key which maps the `String` in the `Intent` is `temp` instead of `tmp`.
+Also, the key mapping the `String` in the `Intent` is `temp` instead of `tmp`.
 
-Moreover, we want to track the click event in this `Activity`.
+Moreover, we have to track the click event in this `Activity`
+but forget to add the tracking instructions in the `onClick` method.
 
 ## Hotfix and event tracking in Java
 
@@ -51,7 +53,7 @@ private void init() {
 }
 ```
 
-To track the event, we should insert the following at the entrance of the `onClick` method:
+To track the event, we should insert the following code snippet at the entrance of the `onClick` method:
 
 ```
 // `this` is the `OnClickListener`. We get its enclosing `Activity`.
@@ -64,9 +66,12 @@ track(context.getClass().getName(), id);
 
 ## Write code in Zlang
 
-We write the above code snippets in Zlang respectively:
+We write the above code snippets in Zlang respectively.
+
+For the `init` method, we write the following:
 
 ```
+/* The replacement of the init method */
 function main(className, methodName, methodSignature, this, parameters) {
    intent = _invoke_method(this, "getIntent");
    tmp = _invoke_public_method(intent, "getStringExtra", "temp");
@@ -78,7 +83,13 @@ function main(className, methodName, methodSignature, this, parameters) {
 }
 ```
 
+For we should replace the original method `init`, we have to make the `main` function have a return value,
+which is thus `null` above.
+
+For the `onClick` method, we write the following:
+
 ```
+/* The instructions to execute at the entrance of the onClick method */
 function main(className, methodName, methodSignature, this, parameters) {
    context = get_outer_context(this);
    id = _invoke_public_method(parameters[0], \"getId\");
@@ -86,14 +97,14 @@ function main(className, methodName, methodSignature, this, parameters) {
 }
 ```
 
-Because we want to replace the original method `init`, we must give the method a return value, which is `null` above.
 
-`get_outer_context` is a Java function provided by Pinoc instead of Zlang.
+The above `get_outer_context` is a Java function provided by Pinoc instead of Zlang.
 You may refer to `PinocLibraries` for more provided functions.
 
 ## Write the configuration
 
-We write the configuration:
+We write the following configuration:
+
 ```
 {targets:[
     {class: "com/iqiyi/trojantest/DemoActivity", method_name: "init", method_sig: "()V", library: 0},
@@ -116,3 +127,6 @@ libraries:[
 \}"
 ]}
 ```
+
+Note that `{`, `}` and `"` should be escaped in a Json string.
+
