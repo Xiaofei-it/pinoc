@@ -52,7 +52,7 @@ and return immediately, and the time overhead is thus extremely low.
 
 See the following table for comparision:
 
-|  A method | Executing it | Executing its Pinoc variant | Pinoc overhead|
+|  A method | Executing it (nanoseconds) | Pinoc variant (nanoseconds)| Pinoc overhead (nanoseconds)|
 | :------: | :------:| :------:| :------:|
 |  Empty method | 46.46094| 737.08698 | 690.62604 |
 |  Complex method | 36771.06509| 37713.69061 | 942.62552 |
@@ -61,10 +61,10 @@ See the following table for comparision:
 In the above table, the second column shows the time spent executing the method in the first column,
 the third column shows the time spent executing its Pinoc variant,
 and the fourth column shows the Pinoc overhead.
-All of the data shown in the table are in nanoseconds.
+All of the data shown in the table are **in nanoseconds**.
 
 From the table, we can see that the time spent executing the injected code snippet
-is less than 1 microsecond, which is an extremely low time overhead.
+is **less than 1 microsecond**, which is an extremely low time overhead.
 
 ## Comparision with other techniques
 
