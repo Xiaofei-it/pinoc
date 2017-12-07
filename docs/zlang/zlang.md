@@ -173,12 +173,12 @@ is replaced with a `JavaLibrary.Builder`.
 
 ## Learning more
 
-Learn the source code of Zlang from [HERE](https://github.com/Xiaofei-it/Zlang).
+[Source code of Zlang](https://github.com/Xiaofei-it/Zlang).
 
-Learn the syntax of Zlang from [HERE](docs/syntax.md).
+[Syntax of Zlang](docs/syntax.md).
 
-Learn the statements of Zlang from [HERE](docs/statements.md).
+[Statements of Zlang](docs/statements.md).
 
-Learn the funtions and libraries of Zlang from [HERE](docs/functions_libraries.md).
+[Funtions and libraries of Zlang](docs/functions_libraries.md).
 
-Learn the intenal Java function provided by Zlang from [HERE](docs/internal_java_functions.md).
+[intenal Java function provided by Zlang](docs/internal_java_functions.md).
