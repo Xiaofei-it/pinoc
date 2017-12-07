@@ -41,6 +41,31 @@ is passed to the Zlang executor for execution.
 
 See [Principle of Pinoc](docs/pinoc_principle.md) for more information.
 
+## High performance
+
+As for the memory and CPU usage, Pinoc has a high performance in memory and CPU usage,
+so it will not affect the memory and CPU usage of your app.
+
+As for the time spent executing methods, although Pinoc injects a code snippet
+at the entrance of each method, most of the code snippet only retrieve a `ConcurrentHashMap`
+and return immediately, and the time overhead is thus extremely low.
+
+See the following table for comparision:
+
+|  A method | Executing it | Executing its Pinoc variant | Pinoc overhead|
+| :------: | :------:| :------:| :------:|
+|  Empty method | 46.46094| 737.08698 | 690.62604 |
+|  Complex method | 36771.06509| 37713.69061 | 942.62552 |
+| More complex method |74522.70934 | 75466.49896| 943.78962 |
+
+In the above table, the second column shows the time spent executing the method in the first column,
+the third column shows the time spent executing its Pinoc variant,
+and the fourth column shows the Pinoc overhead.
+All of the data shown in the table are in nanoseconds.
+
+From the table, we can see that the time spent executing the injected code snippet
+is less than 1 microsecond, which is an extremely low time overhead.
+
 ## Comparision with other techniques
 
 Since Pinoc can replace and modify Java methods, we may adopt it for hotfix deployment and dynamic event tracking.
