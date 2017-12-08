@@ -210,7 +210,7 @@ function test2(a) {
 
 The name of the custom Java functions should start with letters.
 Any Java functions whose name starts with the underscore is regarded as the internal Java functions,
-provided by Zlang. See `xiaofei.library.zlang.InternalJavaFunction` for the internal Java functions
+provided by Zlang. See [InternalJavaFunction](internal_java_functions.md) for the internal Java functions
 provided by Zlang.
 
 ## Build a Java library at Java runtime
@@ -257,4 +257,4 @@ library.execute("test2", new Object[]{3});
 ```
 
 Note that if `execute` calls a Zlang function which has a return value, `execute` will also return
-this return value as its own return value.
+such return value as its own return value.

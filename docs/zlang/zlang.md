@@ -173,8 +173,6 @@ is replaced with a `JavaLibrary.Builder`.
 
 ## Learning more
 
-[Source code of Zlang](https://github.com/Xiaofei-it/Zlang).
-
 [Syntax of Zlang](docs/syntax.md).
 
 [Statements of Zlang](docs/statements.md).

@@ -37,11 +37,11 @@ libraries:[
 The array mapped by `targets` above is an array of Json objects, each of which specifies a method
 to modify and its modification, in that the explicit key-value pairs of each Json object consist of:
 
-1. the name of the declaring class of this method,
+1. the name of the declaring class of such method,
 
-2. the name and the signature of this method,
+2. the name and the signature of such method,
 
-3. the index of a Zlang library containing some instructions to execute inside this method, and
+3. the index of a Zlang library containing some instructions to execute inside such method, and
 
 4. a thread mode which specifies these instructions' threading at its runtime.
 
@@ -91,7 +91,7 @@ then the replacement will succeed only in either of the following circumstances:
 1. The `thread_mode` is defined as 0 (which means the function to replace the original method still runs on the current thread);
 
 2. The `thread_mode` is defined as 1 (which means the function to replace the original method is expected to run on the UI thread),
-and this original method is running exactly on the UI thread.
+and such original method is running exactly on the UI thread.
 
 Except for the above two cases, the instructions within the original method will still be executed,
 while the function to replace the original method is executed on the specified thread.
@@ -144,7 +144,7 @@ you can add the Zlang dependency, which is a Zlang library containing Zlang func
 which can be called from the functions of each of the libraries in the specified configuration.
 
 Pinoc will add the dependency to each of the libraries, whose instructions are located
-in the Json string which will be downloaded from a server in the future, when this library is built.
+in the Json string which will be downloaded from a server in the future, when such library is built.
 
 Therefore, you can put all of the fundamental functions into the Zlang dependency.
 
@@ -162,7 +162,7 @@ which can be called from the statements within the Zlang functions of each of th
 in the specified configuration.
 
 Pinoc will add the dependency to each of the libraries, whose instructions are located
-in the Json string which will be downloaded from a server in the future, when this library is built.
+in the Json string which will be downloaded from a server in the future, when such library is built.
 
 Therefore, a good practice is to put into the Java dependency
 all of the fundamental functions which interact with Java,

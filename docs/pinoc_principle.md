@@ -73,9 +73,9 @@ public class Test {
 The injected code snippet invokes a static method called `onEneterMethod` of the `Pinoc` class.
 `onEnterMethod` receives the information about the invocation,
 including the name of the declaring class of the method being invoked,
-the name and the signature of this method,
-the object on which this method is being invoked,
-and the parameters passed to this method.
+the name and the signature of such method,
+the object on which such method is being invoked,
+and the parameters passed to such method.
 
 Inside `onEnterMethod`, Pinoc decides whether to execute some instructions and what to return after
 the execution, according to a configuration, which specifies:
@@ -93,19 +93,19 @@ At runtime, when Pinoc is initialized, it reads a configuration which specified 
 
 As mentioned above, when a method is being invoked, `Pinoc.onEnterMethod` receives the corresponding
 information about the invocation.
-Then Pinoc does the following according to whether to modify or replace this method respectively:
+Then Pinoc does the following according to whether to modify or replace such method respectively:
 
-1. If the specified instructions should be injected at the entrance of this method,
+1. If the specified instructions should be injected at the entrance of such method,
 Pinoc executes the injected instructions and returns `Library.NO_RETURN_VALUE`,
 a special `Object` defined in the [`Library`](https://github.com/Xiaofei-it/Zlang/blob/master/zlang/src/main/java/xiaofei/library/zlang/Library.java) class.
 Then the remaining instructions within the original method are executed.
 
-2. If this method should be replaced, Pinoc executes the instructions of its replacement and returns
+2. If such method should be replaced, Pinoc executes the instructions of its replacement and returns
 the return value of the replacement to the original method.
 Then the original method returns it directly as its own return value,
 and the remaining instructions within the original method are thus not executed.
 
-3. If this method should neither be modified nor replaced, `Pinoc.onEnterMethod()` will simply
+3. If such method should neither be modified nor replaced, `Pinoc.onEnterMethod()` will simply
 return `Library.NO_RETURN_VALUE`. Then the instructions of the original method are executed.
 
 Note that Pinoc has a high performance in memory and CPU usage, so it will not affect the memory and CPU usage of your app.

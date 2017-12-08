@@ -50,7 +50,12 @@ As for the time spent executing methods, although Pinoc injects a code snippet
 at the entrance of each method, most of the code snippet only retrieve a `ConcurrentHashMap`
 and return immediately, and the time overhead is thus extremely low.
 
-See the following table for comparision:
+We have measured the time spent executing some methods and their Pinoc variants
+for comparison.
+Specifically, we measured the time spent executing a particular method for 100000 times,
+and divided such time by 100000 to obtain the time spent executing such method only once.
+
+Illustrated in the following table is the result:
 
 |  A method | Executing it (nanoseconds) | Pinoc variant (nanoseconds)| Pinoc overhead (nanoseconds)|
 | :------: | :------:| :------:| :------:|
