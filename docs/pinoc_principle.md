@@ -2,7 +2,7 @@
 
 This chapter covers the principle of the Pinoc library.
 
-<img src="docs/pics/pinoc_structure.png" width="1200" height="1000"/>
+<img src="pics/pinoc_structure.png" width="1200" height="1000"/>
 
 When an Android app is built, the Pinoc plugin replaces each Java method in your app with
 its variant. Specifically, after the replacement each method (the original method) is replaced with its variant.
