@@ -5,6 +5,8 @@ Pinoc is a novel library for dynamic classloader-free modification of an Android
 Specifically, Pinoc supports the code injection at the entrance to a Java method, the code replacement of a whole Java method,
 and the addition of a new Java method.
 
+[Chinese translation 中文翻译版](docs/README_CHINESE.md)
+
 ## Features
 
 1. Provides a novel technique for hotfix deployment without the need of a Java classloader.
