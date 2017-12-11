@@ -8,20 +8,25 @@ When an Android app is built, the Pinoc plugin replaces each Java method in your
 its variant. Specifically, after the replacement each method (the original method) is replaced with its variant.
 
 At runtime, when a method is invoked, it is the variant of the original method that is actually invoked.
-The variant passes the information about the invocation to Pinoc,
+The variant is responsible for invoking its original method.
+Before that, however, it first passes the information about the invocation to Pinoc,
 which decides whether to replace or modify the original method,
 according to a configuration file, which may be downloaded from a server.
 
-To avoid the trouble caused by the Java classloader, Pinoc does not adopt the Java classloader.
+To avoid the trouble caused by the Java classloader, Pinoc does not adopt the Java classloader
+to load and execute the replacement or the modification of the original method.
 Thus the replacement or the modification of the original method is not written in Java.
 
 Instead it is written in Zlang, a flexible dynamically-typed programming language running on the
 JVM and supporting access to Java objects and interaction with Java at runtime.
 It is easy to convert a Java method or statement into a Zlang function or statement.
 
-If Pinoc decides to replace or modify the original method, it compiles the instructions of
-the replacement or the modification by the Zlang compiler, after which the output of the compilation
-is passed to the Zlang executor for execution.
+Therefore, at runtime, if Pinoc decides to replace or modify a particular method,
+it compiles the instructions of the replacement or the modification
+of such method by the Zlang compiler into the Zlang bytecode,
+after which the Zlang bytecode is passed to the Zlang executor for execution.
+As a result, the replacement or the modification of such method is executed
+and such method is thus replaced or modified.
 
 ## Code injection at compile time
 
