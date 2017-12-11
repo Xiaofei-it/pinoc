@@ -37,9 +37,12 @@ Instead it is written in Zlang, a flexible dynamically-typed programming languag
 JVM and supporting access to Java objects and interaction with Java at runtime.
 It is easy to convert a Java method or statement into a Zlang function or statement.
 
-If Pinoc decides to replace or modify the original method, it compiles the instructions of
-the replacement or the modification by the Zlang compiler, after which the output of the compilation
-is passed to the Zlang executor for execution.
+At runtime, if Pinoc decides to replace or modify a particular method,
+it compiles the instructions of the replacement or the modification
+of such method by the Zlang compiler into the Zlang bytecode,
+after which the Zlang bytecode is passed to the Zlang executor for execution.
+As a result, the replacement or the modification of such method is executed
+and such method is thus replaced or modified.
 
 See [Principle of Pinoc](docs/pinoc_principle.md) for more information.
 
