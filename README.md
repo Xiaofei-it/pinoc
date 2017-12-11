@@ -23,7 +23,7 @@ once it has read the specified configuration.
 <img src="docs/pics/pinoc_structure.png" width="1200" height="1000"/>
 
 When an Android app is built, the Pinoc plugin replaces each Java method in your app with
-its variant. Specifically, after the replacement each method (the original method) is replaced with its variant.
+its variant. Specifically, after the replacement of each method (the original method) is replaced with its variant.
 
 At runtime, when a method is invoked, it is the variant of the original method that is actually invoked.
 The variant is responsible for invoking its original method.
@@ -41,7 +41,7 @@ It is easy to convert a Java method or statement into a Zlang function or statem
 
 Therefore, at runtime, if Pinoc decides to replace or modify a particular method,
 it compiles the instructions of the replacement or the modification
-of such method by the Zlang compiler into the Zlang bytecode,
+of such method by the Zlang compiler into Zlang bytecode,
 after which the Zlang bytecode is passed to the Zlang executor for execution.
 As a result, the replacement or the modification of such method is executed
 and such method is thus replaced or modified.
