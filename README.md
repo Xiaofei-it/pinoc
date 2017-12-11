@@ -32,18 +32,18 @@ which decides whether to replace or modify the original method,
 according to a configuration file, which may be downloaded from a server.
 
 To avoid the trouble caused by the Java classloader, Pinoc does not adopt the Java classloader
-to load and execute the replacement or the modification of the original method.
-Thus the replacement or the modification of the original method is not written in Java.
+to load and execute the replacement or modification of the original method.
+Thus the replacement or modification of the original method is not written in Java.
 
 Instead it is written in Zlang, a flexible dynamically-typed programming language running on the
 JVM and supporting access to Java objects and interaction with Java at runtime.
 It is easy to convert a Java method or statement into a Zlang function or statement.
 
 Therefore, at runtime, if Pinoc decides to replace or modify a particular method,
-it compiles the instructions of the replacement or the modification
+it compiles the instructions of the replacement or modification
 of such method by the Zlang compiler into Zlang bytecode,
 after which the Zlang bytecode is passed to the Zlang executor for execution.
-As a result, the replacement or the modification of such method is executed
+As a result, the replacement or modification of such method is executed
 and such method is thus replaced or modified.
 
 See [Principle of Pinoc](docs/pinoc_principle.md) for more information.

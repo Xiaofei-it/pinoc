@@ -4,7 +4,7 @@ This chapter covers the usage of the Pinoc library.
 
 ## Configuration
 
-Pinoc needs a configuration to specify the replacement or the modification of methods.
+Pinoc needs a configuration to specify the replacements or modifications of methods.
 The configuration is a Json string, which is always downloaded from a server.
 
 Therefore, remember to download a configuration from your server.
