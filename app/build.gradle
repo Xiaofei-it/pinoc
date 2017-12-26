@@ -26,7 +26,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.iqiyi:pinoc-plugin:0.2.2'
+        classpath 'com.iqiyi:pinoc-plugin:0.3.0'
 //        classpath files("../localRepos/pinoc-plugin-0.2.1.jar")
 
         // NOTE: Do not place your application dependencies here; they belong

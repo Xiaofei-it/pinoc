@@ -126,7 +126,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.iqiyi:pinoc-plugin:0.2.1' 
+        classpath 'com.iqiyi:pinoc-plugin:0.3.0'
     }
 }
 apply plugin: "pinoc"
