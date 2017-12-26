@@ -1,6 +1,6 @@
 # Pinoc
 
-Pinoc is a novel library for dynamic classloader-free modification of an Android app,
+Pinoc is a novel library for dynamic classloader-free modification of an Android app.
 
 Specifically, Pinoc supports the code injection at the entrance to a Java method, the code replacement of a whole Java method,
 and the addition of a new Java method.
@@ -33,9 +33,8 @@ according to a configuration file, which may be downloaded from a server.
 
 To avoid the trouble caused by the Java classloader, Pinoc does not adopt the Java classloader
 to load and execute the replacement or modification of the original method.
-Thus the replacement or modification of the original method is not written in Java.
-
-Instead it is written in Zlang, a flexible dynamically-typed programming language running on the
+Thus the replacement or modification of the original method is not written in Java,
+but in Zlang, a flexible dynamically-typed programming language running on the
 JVM and supporting access to Java objects and interaction with Java at runtime.
 It is easy to convert a Java method or statement into a Zlang function or statement.
 
