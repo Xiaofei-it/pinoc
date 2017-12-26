@@ -24,19 +24,9 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven {
-            //url uri('../repo')
-            url "http://maven.mbd.qiyi.domain/nexus/content/repositories/mbd-show/"
-        }
-        maven {
-            url "https://dl.bintray.com/iqiyi/pinoc"
-        }
     }
     dependencies {
-        //classpath 'com.iqiyi.trojan.plugin:trojan-plugin:0.0.57'
-//        classpath 'com.iqiyi.ishow.support:trojan-plugin:show'
-//        classpath 'com.iqiyi.ishow.support:trojan-plugin:0.0.125'
-        classpath 'com.iqiyi:pinoc-plugin:0.2.1'
+        classpath 'com.iqiyi:pinoc-plugin:0.2.2'
 //        classpath files("../localRepos/pinoc-plugin-0.2.1.jar")
 
         // NOTE: Do not place your application dependencies here; they belong
