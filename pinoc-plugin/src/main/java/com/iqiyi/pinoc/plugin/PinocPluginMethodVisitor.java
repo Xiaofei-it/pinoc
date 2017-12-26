@@ -143,7 +143,7 @@ class PinocPluginMethodVisitor extends AdviceAdapter {
     };
 
     PinocPluginMethodVisitor(int api, MethodVisitor mv, int access, String className, String methodName, String desc) {
-        super(api, new TestMethodVisitor2(api, mv), access, methodName, desc);
+        super(api, mv, access, methodName, desc);
         initParameterTypes(desc);
         this.className = className;
         this.methodName = methodName;
@@ -181,7 +181,6 @@ class PinocPluginMethodVisitor extends AdviceAdapter {
         }
         ++pos;
         returnType = (String) obtainType(desc, pos)[1];
-        System.out.println("return type = " + returnType);
     }
 
     private void pushConst(int number) {
@@ -212,7 +211,6 @@ class PinocPluginMethodVisitor extends AdviceAdapter {
 
     @Override
     protected void onMethodEnter() {
-        System.out.println("onMethodEnter");
         mv.visitLdcInsn(className);
         mv.visitLdcInsn(methodName);
         mv.visitLdcInsn(methodSignature);
@@ -365,30 +363,21 @@ class PinocPluginMethodVisitor extends AdviceAdapter {
         objects[parameterNumber + 1] = "java/lang/Object";
         mv.visitFrame(Opcodes.F_NEW, parameterNumber + 2, objects, 0, new Object[0]);
     }
-    @Override
-    public void visitLabel(Label label) {
-        System.out.println("visitLabel " + label);
-        super.visitLabel(label);
-    }
 
     @Override
     public void visitVarInsn(int opcode, int var) {
         // 0, 1    3   -> 0, 1,   4
         // 0, 1, 3   4  -> 0, 1, 3,   5
-        System.out.println("visit var insn1 " + opcode +  " " + var + " " + parameterTypes.size());
         int threshold = resultOffset;
         if (var < threshold) {
-            System.out.println("visit var insn2 " + opcode +  " " + var);
             mv.visitVarInsn(opcode, var);
         } else {
-            System.out.println("visit var insn3 " + opcode +  " " + (var + 1));
             mv.visitVarInsn(opcode, var + 1);
         }
     }
 
     @Override
     public void visitIincInsn(int var, int increment) {
-        System.out.println("visit iinc insn " + var +  " " + increment);
         int threshold = resultOffset;
         if (var < threshold) {
             mv.visitIincInsn(var, increment);
@@ -399,39 +388,10 @@ class PinocPluginMethodVisitor extends AdviceAdapter {
 
     @Override
     public void visitLocalVariable(String name, String desc, String signature, Label start, Label end, int index) {
-        System.out.println("visitLocalVariable1 " + name +  " " + desc + " " + signature + " " + start + " " + end + "  " + index);
         if (index < resultOffset) {
-            System.out.println("visitLocalVariable2 " + name +  " " + desc + " " + signature + " " + start + " " + end + "  " + index);
             mv.visitLocalVariable(name, desc, signature, start, end, index);
         } else {
-            System.out.println("visitLocalVariable3 " + name +  " " + desc + " " + signature + " " + start + " " + end + "  " + (index + 1));
             mv.visitLocalVariable(name, desc, signature, start, end, index + 1);
         }
-    }
-
-    @Override
-    public void visitFrame(int i, int i1, Object[] objects, int i2, Object[] objects1) {
-        System.out.println("Frame " + i + " " + i1 + " " + i2);
-        for (int j = 0; j < objects.length; ++j) {
-            System.out.print(" " + objects[j]);
-        }
-        System.out.println();
-        for (int j = 0; j < objects1.length; ++j) {
-            System.out.print(" " + objects1[j]);
-        }
-        System.out.println();
-        super.visitFrame(i, i1, objects, i2, objects1);
-    }
-
-
-    @Override
-    public AnnotationVisitor visitLocalVariableAnnotation(int typeRef, TypePath typePath, Label[] start, Label[] end, int[] index, String desc, boolean visible) {
-        System.out.println("visitLocalVariableAnnotation");
-        return super.visitLocalVariableAnnotation(typeRef, typePath, start, end, index, desc, visible);
-    }
-
-    @Override
-    public void visitMaxs(int i, int i1) {
-        super.visitMaxs(0, 0);
     }
 }
