@@ -34,7 +34,8 @@ according to a configuration file, which may be downloaded from a server.
 To avoid the trouble caused by the Java classloader, Pinoc does not adopt the Java classloader
 to load and execute the replacement or modification of the original method.
 Thus the replacement or modification of the original method is not written in Java,
-but in Zlang, a flexible dynamically-typed programming language running on the
+but in [Zlang](https://github.com/Xiaofei-it/Zlang),
+a flexible dynamically-typed programming language running on the
 JVM and supporting access to Java objects and interaction with Java at runtime.
 It is easy to convert a Java method or statement into a Zlang function or statement.
 
@@ -108,7 +109,7 @@ See [Principle of Pinoc](docs/pinoc_principle.md) for more information.
 The replacement and modification of a method should be written in Zlang,
 which is very easy to learn and use.
 
-To learn Zlang, please refer to [Zlang](docs/zlang/zlang.md).
+To learn Zlang, please refer to [Zlang](https://github.com/Xiaofei-it/Zlang).
 We are sure that you will be able to master and use it **in one hour**.
 
 As for Pinoc, we provide you with [Usage of Pinoc](docs/pinoc_usage.md).
