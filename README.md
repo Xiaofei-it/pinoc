@@ -136,7 +136,7 @@ Also, you may disable Pinoc temporarily by adding the following
 in `gradle.properties` of your project or modules:
 
 ```
-pinoc-plugin.enabled=false // default is true
+pinoc-plugin.enabled=false // true by default
 ```
 
 ## License
