@@ -20,20 +20,20 @@ once it has read the specified configuration.
 
 ## Principle
 
+When an Android app is built, the Pinoc plugin replaces each Java method in your app with
+its variant. Specifically, after the replacement of each method (the original method) is replaced with its variant.
+
 <img src="docs/pics/build_structure.png" width="300" height="120"/>
 <br/>
 <img src="docs/pics/runtime_config.png" width="420" height="160"/>
-<br/>
-<img src="docs/pics/pnioc_runtime.png" width="700" height="260"/>
-
-When an Android app is built, the Pinoc plugin replaces each Java method in your app with
-its variant. Specifically, after the replacement of each method (the original method) is replaced with its variant.
 
 At runtime, when a method is invoked, it is the variant of the original method that is actually invoked.
 The variant is responsible for invoking its original method.
 Before that, however, it first passes the information about the invocation to Pinoc,
 which decides whether to replace or modify the original method,
 according to a configuration file, which may be downloaded from a server.
+
+<img src="docs/pics/pnioc_runtime.png" width="700" height="260"/>
 
 To avoid the trouble caused by the Java classloader, Pinoc does not adopt the Java classloader
 to load and execute the replacement or modification of the original method.

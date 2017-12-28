@@ -18,16 +18,16 @@ Pinoc可以在Java方法入口处进行代码注入，对整个方法进行替�
 
 ## 设计原理
 
+在app构建过程中，Pinoc插件将app中的每个Java方法替换成它的变种方法。每个方法（原始方法）都被替换为它的变种方法。
+
+
 <img src="docs/pics/build_structure.png" width="300" height="120"/>
 <br/>
 <img src="docs/pics/runtime_config.png" width="420" height="160"/>
-<br/>
-<img src="docs/pics/pnioc_runtime.png" width="700" height="260"/>
-
-
-在app构建过程中，Pinoc插件将app中的每个Java方法替换成它的变种方法。每个方法（原始方法）都被替换为它的变种方法。
 
 在app运行时，当一个方法被调用，实际上是调用了原始方法的变种方法。变种方法负责调用原始方法，但在这之前，变种方法首先将原始方法的调用信息传给Pinoc，Pinoc根据配置文件决定是否替换或修改原始方法，这个配置文件可能是从服务器下发的。
+
+<img src="docs/pics/pnioc_runtime.png" width="700" height="260"/>
 
 为避免Java类加载器产生的一些麻烦，Pinoc不采用Java的类加载器来执行方法的替换体或者修改体。所以方法的替换体或者修改体不是用Java语言编写的。它们是用[Zlang](https://github.com/Xiaofei-it/Zlang)编写的，Zlang是一种运行在Java虚拟机的动态灵活的编程语言，支持Java对象的调用，在运行时可以与Java环境交互。开发者可以轻易地将Java代码转化为Zlang代码。
 
