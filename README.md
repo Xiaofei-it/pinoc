@@ -33,7 +33,7 @@ Before that, however, it first passes the information about the invocation to Pi
 which decides whether to replace or modify the original method,
 according to a configuration file, which may be downloaded from a server.
 
-<img src="docs/pics/pnioc_runtime.png" width="700" height="260"/>
+<img src="docs/pics/pinoc_runtime.png" width="700" height="260"/>
 
 To avoid the trouble caused by the Java classloader, Pinoc does not adopt the Java classloader
 to load and execute the replacement or modification of the original method.
