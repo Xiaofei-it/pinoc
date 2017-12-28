@@ -20,7 +20,11 @@ once it has read the specified configuration.
 
 ## Principle
 
-<img src="docs/pics/pinoc_structure.png" width="1200" height="1000"/>
+<img src="docs/pics/build_structure.png" width="300" height="120"/>
+<br/>
+<img src="docs/pics/runtime_config.png" width="420" height="160"/>
+<br/>
+<img src="docs/pics/pnioc_runtime.png" width="700" height="260"/>
 
 When an Android app is built, the Pinoc plugin replaces each Java method in your app with
 its variant. Specifically, after the replacement of each method (the original method) is replaced with its variant.
