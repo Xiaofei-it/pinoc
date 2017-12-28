@@ -18,7 +18,12 @@ Pinoc可以在Java方法入口处进行代码注入，对整个方法进行替�
 
 ## 设计原理
 
-<img src="pics/pinoc_structure.png" width="1046" height="577"/>
+<img src="docs/pics/build_structure.png" width="300" height="120"/>
+<br/>
+<img src="docs/pics/runtime_config.png" width="420" height="160"/>
+<br/>
+<img src="docs/pics/pnioc_runtime.png" width="700" height="260"/>
+
 
 在app构建过程中，Pinoc插件将app中的每个Java方法替换成它的变种方法。每个方法（原始方法）都被替换为它的变种方法。
 
